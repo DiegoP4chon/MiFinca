@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.ganawin.mifinca.ui.auth.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_registerUserFragment"
+            app:destination="@id/registerUserFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.ganawin.mifinca.ui.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_ternerosFragment"
+            app:destination="@id/ternerosFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerUserFragment"
+        android:name="com.ganawin.mifinca.ui.auth.RegisterUserFragment"
+        android:label="RegisterUserFragment" >
+        <action
+            android:id="@+id/action_registerUserFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ternerosFragment"
+        android:name="com.ganawin.mifinca.ui.sreensapp.TernerosFragment"
+        android:label="fragment_terneros"
+        tools:layout="@layout/fragment_terneros" >
+        <action
+            android:id="@+id/action_ternerosFragment_to_addTerneroFragment"
+            app:destination="@id/addTerneroFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addTerneroFragment"
+        android:name="com.ganawin.mifinca.ui.sreensapp.AddTerneroFragment"
+        android:label="fragment_add_ternero"
+        tools:layout="@layout/fragment_add_ternero" />
+</navigation>

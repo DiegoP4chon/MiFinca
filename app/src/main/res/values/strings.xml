@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Mi Finca</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hint_email">E-mail</string>
+    <string name="hint_pass">Password</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="no_have_account">Not have an account? Sign Up</string>
+    <string name="home_title">Inicio</string>
+    <string name="sign_off">Salir</string>
+    <string name="error_email_require">El E-mail es requerido</string>
+    <string name="error_pass_require">Digite su contraseña</string>
+    <string name="register">Registrarse</string>
+    <string name="btn_terneros">Terneros</string>
+    <string name="btnLeche">Leche</string>
+    <string name="btn_ventas">Ventas</string>
+    <string name="btn_apareamientos">Apareamientos</string>
+    <string name="description_btn_exit">Boton cerrar sesión</string>
+    <string name="message_welcome">Bienvenido</string>
+    <string name="btn_add_ternero">Boton agregar ternero</string>
+    <string name="message_fecha_nacimiento">Seleccione la fecha de nacimiento</string>
+    <string name="hint_madre">Indique la madre</string>
+    <string name="hint_raza">Indique la raza</string>
+    <string name="hint_padre">Indique el padre</string>
+    <string name="btn_registrar">Registrar</string>
+    <string name="require">Requerido</string>
+    <string name="macho">Macho</string>
+    <string name="hembra">Hembra</string>
+    <string name="upload_photo">Subir foto</string>
+    <string name="take_photo">Tomar foto</string>
+    <string name="img_upload">Photo Upload</string>
+</resources>

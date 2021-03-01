@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.sreensapp.AddTerneroFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tvSelectDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/message_fecha_nacimiento"
+            android:textAlignment="center"
+            android:layout_marginTop="@dimen/common_default_padding"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <CalendarView
+            android:id="@+id/calendarNacimiento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_default_padding"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvSelectDate" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilMadre"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_madre"
+            android:layout_marginTop="@dimen/common_default_padding"
+            android:layout_marginHorizontal="@dimen/common_default_padding"
+            app:endIconMode="clear_text"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cbMasc">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etMadre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <CheckBox
+            android:id="@+id/cbMasc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/common_default_padding"
+            android:text="@string/macho"
+            app:layout_constraintStart_toStartOf="@id/calendarNacimiento"
+            app:layout_constraintTop_toBottomOf="@id/calendarNacimiento"/>
+
+        <CheckBox
+            android:id="@+id/cbHembra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/common_default_padding"
+            android:checked="false"
+            android:text="@string/hembra"
+            app:layout_constraintEnd_toEndOf="@id/calendarNacimiento"
+            app:layout_constraintTop_toBottomOf="@id/calendarNacimiento" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilPadre"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_padre"
+            android:layout_marginHorizontal="@dimen/common_default_padding"
+            android:layout_marginTop="@dimen/common_default_padding"
+            app:endIconMode="clear_text"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilMadre">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPadre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilRaza"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_raza"
+            android:layout_marginHorizontal="@dimen/common_default_padding"
+            android:layout_marginTop="@dimen/common_default_padding"
+            app:endIconMode="clear_text"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilPadre">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etRaza"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnUpload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/upload_photo"
+            android:layout_marginTop="@dimen/common_default_padding"
+            app:icon="@drawable/ic_add_tern"
+            app:layout_constraintStart_toStartOf="@id/tilRaza"
+            app:layout_constraintTop_toBottomOf="@id/tilRaza"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btntake_photo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/take_photo"
+            android:layout_marginTop="@dimen/common_default_padding"
+            app:icon="@drawable/ic_photo_camera"
+            app:layout_constraintEnd_toEndOf="@id/tilRaza"
+            app:layout_constraintTop_toBottomOf="@id/tilRaza"/>
+
+        <TextView
+            android:id="@+id/tvNoPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_default_padding"
+            android:layout_marginBottom="@dimen/common_default_padding"
+            android:focusable="true"
+            android:clickable="true"
+            android:text="No deseo subir alguna foto"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnUpload"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <ImageView
+            android:id="@+id/imgUpload"
+            android:layout_width="0dp"
+            android:layout_height="250dp"
+            android:layout_marginTop="@dimen/common_default_padding"
+            android:contentDescription="@string/img_upload"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@id/btnUpload"
+            app:layout_constraintEnd_toEndOf="@id/btntake_photo"
+            app:layout_constraintTop_toBottomOf="@id/btntake_photo"/>
+
+        <ProgressBar
+            android:id="@+id/pbUploadImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_default_padding"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imgUpload"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_newTernero"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="@string/btn_registrar"
+            android:layout_marginTop="@dimen/common_default_padding"
+            android:layout_marginBottom="@dimen/common_default_padding"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imgUpload"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.home.HomeFragment">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/common_default_padding"
+        android:text="@string/message_welcome"
+        android:textSize="20sp"
+        style="@style/TextAppearance.AppCompat.Title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/btnMilk"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:src="@mipmap/ic_launcher_round"
+        android:focusable="true"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@+id/btnVentas"
+        app:layout_constraintEnd_toStartOf="@+id/btnTerneros"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btnLeche"
+
+        app:layout_constraintStart_toStartOf="@id/btnMilk"
+        app:layout_constraintEnd_toEndOf="@id/btnMilk"
+        app:layout_constraintTop_toBottomOf="@id/btnMilk"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/btnTerneros"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:src="@mipmap/ic_launcher_round"
+        android:focusable="true"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@+id/btnApareamientos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnMilk"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_terneros"
+        app:layout_constraintStart_toStartOf="@id/btnTerneros"
+        app:layout_constraintEnd_toEndOf="@id/btnTerneros"
+        app:layout_constraintTop_toBottomOf="@id/btnTerneros"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/btnVentas"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:src="@mipmap/ic_launcher_round"
+        android:focusable="true"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnApareamientos"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnMilk" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_ventas"
+        app:layout_constraintStart_toStartOf="@id/btnVentas"
+        app:layout_constraintEnd_toEndOf="@id/btnVentas"
+        app:layout_constraintTop_toBottomOf="@id/btnVentas"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/btnApareamientos"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:src="@mipmap/ic_launcher_round"
+        android:focusable="true"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnVentas"
+        app:layout_constraintTop_toBottomOf="@+id/btnTerneros" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_apareamientos"
+        app:layout_constraintStart_toStartOf="@id/btnApareamientos"
+        app:layout_constraintEnd_toEndOf="@id/btnApareamientos"
+        app:layout_constraintTop_toBottomOf="@id/btnApareamientos"/>
+
+
+    <ImageButton
+        android:id="@+id/btncloseSession"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/ic_exit"
+        android:contentDescription="@string/description_btn_exit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

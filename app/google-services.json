@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "868885953181",
+    "project_id": "mi-finca-4bdc5",
+    "storage_bucket": "mi-finca-4bdc5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:868885953181:android:11eb4447368c9b99c9b274",
+        "android_client_info": {
+          "package_name": "com.ganawin.mifinca"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "868885953181-f09vg7di8vst486dfu4qfm8p1pbumked.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDw0NjLrgTtVgk5jTzL-YS54J5oLvFKlYw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "868885953181-f09vg7di8vst486dfu4qfm8p1pbumked.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
