@@ -35,4 +35,9 @@
     <string name="confirm_delete">¿Desea eliminar este registro?</string>
     <string name="btn_delete">Eliminar</string>
     <string name="btn_cancelar_delete_ternero">Cancelar</string>
+    <string name="hint_sexo">Sexo del animal</string>
+    <string name="btn_change_photo">Cambiar foto</string>
+    <string name="btnSaveChanges">Guardar cambios</string>
+    <string name="description_datePicker">imagen boton calendar</string>
+    <string name="description_exitUpdate">imagen boton cancelar actualizado</string>
 </resources>

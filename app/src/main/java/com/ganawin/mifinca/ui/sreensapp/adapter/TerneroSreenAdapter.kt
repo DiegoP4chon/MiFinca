@@ -32,7 +32,7 @@ class TerneroSreenAdapter(private val ternerosList: List<Ternero>, private var l
         val context: Context
     ): BaseViewHolder<Ternero>(binding.root){
         override fun bind(item: Ternero) {
-            binding.tvDateNacimiento.text = "Fecha de nacimeinto: ${item.date_nacimiento}"
+            binding.tvDateNacimiento.text = "Fecha de nacimiento: ${item.date_nacimiento}"
             binding.tvEdad.text = CalculateEdad().calcularEdad(item.date_nacimiento)
             binding.tvRaza.text = "Raza:${item.raza}"
             binding.tvSexo.text = "Sexo: ${item.sexo}"
@@ -44,7 +44,11 @@ class TerneroSreenAdapter(private val ternerosList: List<Ternero>, private var l
                 .into(binding.imgFotoTernero)
 
             val itemTernero = mutableListOf<String>()
-                itemTernero.add(item.toString())
+                itemTernero.add(item.date_nacimiento)
+                itemTernero.add(item.sexo)
+                itemTernero.add(item.madre)
+                itemTernero.add(item.padre)
+                itemTernero.add(item.raza)
             binding.root.setOnClickListener { listener.onLongClick(item.document, itemTernero)}
         }
     }
