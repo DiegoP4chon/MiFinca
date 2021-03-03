@@ -2,4 +2,5 @@
 <resources>
     <dimen name="common_min_padding">8dp</dimen>
     <dimen name="common_default_padding">16dp</dimen>
+    <dimen name="common_64_padding">64dp</dimen>
 </resources>

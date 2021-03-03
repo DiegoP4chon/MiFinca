@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.CalendarView
@@ -27,6 +28,7 @@ import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.util.*
 import java.util.UUID.randomUUID
+import kotlin.collections.ArrayList
 
 class AddTerneroFragment : Fragment(R.layout.fragment_add_ternero) {
 
@@ -48,6 +50,7 @@ class AddTerneroFragment : Fragment(R.layout.fragment_add_ternero) {
         super.onCreate(savedInstanceState)
         arguments?.let { bundle ->
             UserUid = bundle.getString("UID", "")
+
         }
     }
 

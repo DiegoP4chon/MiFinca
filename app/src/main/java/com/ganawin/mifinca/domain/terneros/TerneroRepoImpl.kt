@@ -16,4 +16,12 @@ class TerneroRepoImpl(private val dataSource: TernerosDataSource): TerneroRepo {
         return dataSource.getListTerneros(collection)
     }
 
+    override suspend fun deleteTernero(collection: String, document: String): Resource<String> {
+        return dataSource.deleteTernero(collection, document)
+    }
+
+    override suspend fun updateTernero(
+            collection: String, document: String, map: HashMap<String, Any>): Resource<String> {
+        return dataSource.updateTernero(collection, document, map)
+    }
 }

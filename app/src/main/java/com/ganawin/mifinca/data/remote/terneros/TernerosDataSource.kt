@@ -5,16 +5,18 @@ import com.ganawin.mifinca.data.model.Ternero
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import java.util.*
+import kotlin.collections.HashMap
 
 class TernerosDataSource {
 
     val firebaseFirestore = FirebaseFirestore.getInstance()
+    private var result = ""
 
     suspend fun setNewTernero(mutableList: MutableList<String>, colecction: String): String{
-        var result = ""
-        firebaseFirestore.collection(colecction).document("${UUID.randomUUID()}")
+        val nameDocument = "${UUID.randomUUID()}"
+        firebaseFirestore.collection(colecction).document(nameDocument)
             .set(Ternero(mutableList[0], mutableList[1], mutableList[2], mutableList[3],
-                mutableList[4], mutableList[5]))
+                mutableList[4], mutableList[5], nameDocument))
             .addOnSuccessListener {
                 result = "Registro agregado"
             }.addOnFailureListener {
@@ -32,5 +34,28 @@ class TernerosDataSource {
             }
         }
         return Resource.Success(ternerosList)
+    }
+
+    suspend fun deleteTernero(collection: String, document: String): Resource<String> {
+        firebaseFirestore.collection(collection).document(document)
+                .delete()
+                .addOnSuccessListener {
+                    result = "Registro eliminado"
+                }
+                .addOnFailureListener {
+                    result = it.toString()
+                }.await()
+        return Resource.Success(result)
+    }
+
+    suspend fun updateTernero(collection: String, document: String, map: HashMap<String, Any>): Resource<String>{
+        firebaseFirestore.collection(collection).document(document).update(map)
+                .addOnSuccessListener {
+                    result = "Registro modificado"
+                }
+                .addOnFailureListener {
+                    result = it.toString()
+                }.await()
+        return  Resource.Success(result)
     }
 }

@@ -1,18 +1,17 @@
 package com.ganawin.mifinca.ui.sreensapp.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.ganawin.mifinca.R
 import com.ganawin.mifinca.core.BaseViewHolder
 import com.ganawin.mifinca.core.CalculateEdad
 import com.ganawin.mifinca.data.model.Ternero
 import com.ganawin.mifinca.databinding.ItemTerneroBinding
 
-class TerneroSreenAdapter(private val ternerosList: List<Ternero>): RecyclerView.Adapter<BaseViewHolder<*>>() {
+class TerneroSreenAdapter(private val ternerosList: List<Ternero>, private var listener: OnClickListener): RecyclerView.Adapter<BaseViewHolder<*>>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
         val itemBinding = ItemTerneroBinding.inflate(LayoutInflater.from(parent.context), parent,
             false)
@@ -43,6 +42,10 @@ class TerneroSreenAdapter(private val ternerosList: List<Ternero>): RecyclerView
                 .load(item.url_photo)
                 .centerCrop()
                 .into(binding.imgFotoTernero)
+
+            val itemTernero = mutableListOf<String>()
+                itemTernero.add(item.toString())
+            binding.root.setOnClickListener { listener.onLongClick(item.document, itemTernero)}
         }
     }
 }

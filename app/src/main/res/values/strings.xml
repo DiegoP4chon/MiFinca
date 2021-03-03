@@ -29,4 +29,10 @@
     <string name="upload_photo">Subir foto</string>
     <string name="take_photo">Tomar foto</string>
     <string name="img_upload">Photo Upload</string>
+    <string name="dialog_delete">Borrar registro</string>
+    <string name="dialog_update">Modificar datos</string>
+    <string name="dialog_OnLongClick">¿Que desea hacer?</string>
+    <string name="confirm_delete">¿Desea eliminar este registro?</string>
+    <string name="btn_delete">Eliminar</string>
+    <string name="btn_cancelar_delete_ternero">Cancelar</string>
 </resources>

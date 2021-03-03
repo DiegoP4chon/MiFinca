@@ -29,6 +29,25 @@ class TerneroScreenViewModel(private val repo: TerneroRepo): ViewModel() {
         }
     }
 
+    fun deleteItemTernero(collection: String, document: String) = liveData(Dispatchers.IO){
+        emit(Resource.Loading())
+        try{
+            emit(repo.deleteTernero(collection, document))
+        } catch (e: Exception){
+            emit(Resource.Failure(e))
+        }
+    }
+
+    fun updateItemTernero(collection: String, document: String, map: HashMap<String, Any>)  = liveData(Dispatchers.IO){
+        emit(Resource.Loading())
+        try{
+            emit(repo.updateTernero(collection, document, map))
+        }catch (e: Exception){
+            emit(Resource.Failure(e))
+        }
+
+    }
+
 }
 class TerneroScreenViewModelFactory(private val repo: TerneroRepo): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
