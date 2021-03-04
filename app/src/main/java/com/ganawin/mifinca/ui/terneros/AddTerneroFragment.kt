@@ -1,4 +1,4 @@
-package com.ganawin.mifinca.ui.sreensapp
+package com.ganawin.mifinca.ui.terneros
 
 import android.app.Activity
 import android.content.ActivityNotFoundException

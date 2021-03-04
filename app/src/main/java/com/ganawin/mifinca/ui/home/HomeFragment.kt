@@ -27,7 +27,12 @@ class HomeFragment : Fragment(R.layout.fragment_home,) {
         binding = FragmentHomeBinding.bind(view)
         binding.btncloseSession.setOnClickListener { signOff() }
         binding.btnTerneros.setOnClickListener { screenTerneros() }
+        binding.btnMilk.setOnClickListener { screenLeche() }
 
+    }
+
+    private fun screenLeche() {
+        findNavController().navigate(R.id.action_homeFragment_to_lecheFragment)
     }
 
     private fun screenTerneros() {

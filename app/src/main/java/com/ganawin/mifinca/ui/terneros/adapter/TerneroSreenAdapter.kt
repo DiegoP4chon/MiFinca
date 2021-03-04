@@ -1,4 +1,4 @@
-package com.ganawin.mifinca.ui.sreensapp.adapter
+package com.ganawin.mifinca.ui.terneros.adapter
 
 import android.content.Context
 import android.view.LayoutInflater

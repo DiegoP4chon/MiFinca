@@ -1,4 +1,4 @@
-package com.ganawin.mifinca.ui.sreensapp
+package com.ganawin.mifinca.ui.terneros
 
 import android.app.Activity
 import android.app.DatePickerDialog
@@ -22,8 +22,8 @@ import com.ganawin.mifinca.databinding.FragmentTernerosBinding
 import com.ganawin.mifinca.domain.terneros.TerneroRepoImpl
 import com.ganawin.mifinca.presentation.ternero.TerneroScreenViewModel
 import com.ganawin.mifinca.presentation.ternero.TerneroScreenViewModelFactory
-import com.ganawin.mifinca.ui.sreensapp.adapter.OnClickListener
-import com.ganawin.mifinca.ui.sreensapp.adapter.TerneroSreenAdapter
+import com.ganawin.mifinca.ui.terneros.adapter.OnClickListener
+import com.ganawin.mifinca.ui.terneros.adapter.TerneroSreenAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage

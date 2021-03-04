@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_homeFragment_to_ternerosFragment"
             app:destination="@id/ternerosFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_lecheFragment"
+            app:destination="@id/lecheFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerUserFragment"
@@ -36,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/ternerosFragment"
-        android:name="com.ganawin.mifinca.ui.sreensapp.TernerosFragment"
+        android:name="com.ganawin.mifinca.ui.terneros.TernerosFragment"
         android:label="fragment_terneros"
         tools:layout="@layout/fragment_terneros" >
         <action
@@ -45,7 +48,12 @@
     </fragment>
     <fragment
         android:id="@+id/addTerneroFragment"
-        android:name="com.ganawin.mifinca.ui.sreensapp.AddTerneroFragment"
+        android:name="com.ganawin.mifinca.ui.terneros.AddTerneroFragment"
         android:label="fragment_add_ternero"
         tools:layout="@layout/fragment_add_ternero" />
+    <fragment
+        android:id="@+id/lecheFragment"
+        android:name="com.ganawin.mifinca.ui.leche.LecheFragment"
+        android:label="fragment_leche"
+        tools:layout="@layout/fragment_leche" />
 </navigation>
