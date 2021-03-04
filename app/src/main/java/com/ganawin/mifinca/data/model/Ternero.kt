@@ -7,5 +7,6 @@ data class Ternero(
     val padre: String = "",
     val raza: String = "",
     val url_photo: String = "",
-    val document: String = ""
+    val document: String = "",
+    val idPhoto:String = ""
 )

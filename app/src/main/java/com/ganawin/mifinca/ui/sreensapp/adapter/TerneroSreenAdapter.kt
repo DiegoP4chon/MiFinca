@@ -49,6 +49,7 @@ class TerneroSreenAdapter(private val ternerosList: List<Ternero>, private var l
                 itemTernero.add(item.madre)
                 itemTernero.add(item.padre)
                 itemTernero.add(item.raza)
+                itemTernero.add(item.idPhoto)
             binding.root.setOnClickListener { listener.onLongClick(item.document, itemTernero)}
         }
     }

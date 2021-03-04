@@ -38,6 +38,7 @@ class TernerosFragment : Fragment(R.layout.fragment_terneros), OnClickListener {
     private lateinit var userUIDColecction: String
     private lateinit var mStorageReference: StorageReference
     private val mapTernero: HashMap<String, Any> = hashMapOf()
+    private var idPhoto: String = ""
 
     private val viewModel by viewModels<TerneroScreenViewModel> { TerneroScreenViewModelFactory(
         TerneroRepoImpl(TernerosDataSource())
@@ -49,6 +50,7 @@ class TernerosFragment : Fragment(R.layout.fragment_terneros), OnClickListener {
 
         userUid()
         binding = FragmentTernerosBinding.bind(view)
+        mStorageReference = FirebaseStorage.getInstance().reference
         binding.fbtnAddTernero.setOnClickListener { addTerneroFragment() }
         showTerneros()
     }
@@ -78,7 +80,7 @@ class TernerosFragment : Fragment(R.layout.fragment_terneros), OnClickListener {
                 .setTitle(getString(R.string.dialog_OnLongClick))
                 .setItems(items) { dialogInterface, i ->
                     when(i){
-                        0 -> deleteTernero(document)
+                        0 -> deleteTernero(document, itemsTernero[5])
                         1 -> updateTernero(document, itemsTernero)
                     }
                 }.show()
@@ -86,6 +88,13 @@ class TernerosFragment : Fragment(R.layout.fragment_terneros), OnClickListener {
     }
 
     private fun updateTernero(document: String, itemsTernero: MutableList<String>) {
+
+        if(itemsTernero[5] == ""){
+            idPhoto = "${UUID.randomUUID()}"
+        }else {
+            idPhoto = itemsTernero[5]
+        }
+
         binding.fbtnAddTernero.visibility = View.GONE
         binding.btnCancelUpdate.setOnClickListener {
             binding.cvEditTernero.visibility = View.GONE
@@ -141,10 +150,9 @@ class TernerosFragment : Fragment(R.layout.fragment_terneros), OnClickListener {
     }
 
     private fun uploadNewPhoto(imageSelectedUri: Uri) {
-        mStorageReference = FirebaseStorage.getInstance().reference
 
         val storageReference = mStorageReference.child("FotosTerneros")
-                .child(userUIDColecction).child("${UUID.randomUUID()}")
+                .child(userUIDColecction).child(idPhoto)
         imageSelectedUri.let {
             storageReference.putFile(imageSelectedUri)
                     .addOnProgressListener {
@@ -161,6 +169,7 @@ class TernerosFragment : Fragment(R.layout.fragment_terneros), OnClickListener {
                             mapTernero["url_photo"] = it.toString()
                             //URL = it.toString()
                         }
+                        mapTernero["idPhoto"] = it.storage.name
                     }
                     .addOnFailureListener{
                         Toast.makeText(requireContext(), "Error al subir la foto", Toast.LENGTH_SHORT)
@@ -184,11 +193,11 @@ class TernerosFragment : Fragment(R.layout.fragment_terneros), OnClickListener {
         datePickerDialog.show()
     }
 
-    fun deleteTernero(document: String){
+    fun deleteTernero(document: String, idPhoto: String){
         MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.confirm_delete)
                 .setPositiveButton(R.string.btn_delete) { dialogInterface, i ->
-                    confirmDeleteTernero(document)
+                    confirmDeleteTernero(document, idPhoto)
                 }
                 .setNegativeButton(R.string.btn_cancelar_delete_ternero, null)
                 .show()
@@ -216,14 +225,14 @@ class TernerosFragment : Fragment(R.layout.fragment_terneros), OnClickListener {
                 })
     }
 
-    fun confirmDeleteTernero(document: String){
+    fun confirmDeleteTernero(document: String, idPhoto: String){
         viewModel.deleteItemTernero(userUIDColecction, document).observe(viewLifecycleOwner, Observer { result ->
             when(result){
                 is Resource.Loading -> {}
                 is Resource.Success -> {
                     Toast.makeText(requireContext(), result.data, Toast.LENGTH_SHORT)
                             .show()
-                    //Log.d("EliminandoRegistros", "resultado: ${result.data}")
+                    deletePhoto(idPhoto)
                     showTerneros()
                 }
                 is Resource.Failure -> {
@@ -233,6 +242,15 @@ class TernerosFragment : Fragment(R.layout.fragment_terneros), OnClickListener {
                 }
             }
         })
+    }
+
+    private fun deletePhoto(idPhoto: String) {
+
+        if(idPhoto != ""){
+            val storageReference = mStorageReference.child("FotosTerneros")
+                    .child(userUIDColecction).child(idPhoto)
+            storageReference.delete()
+        }
     }
 
     private fun addTerneroFragment() {

@@ -16,7 +16,7 @@ class TernerosDataSource {
         val nameDocument = "${UUID.randomUUID()}"
         firebaseFirestore.collection(colecction).document(nameDocument)
             .set(Ternero(mutableList[0], mutableList[1], mutableList[2], mutableList[3],
-                mutableList[4], mutableList[5], nameDocument))
+                mutableList[4], mutableList[5], nameDocument, mutableList[6]))
             .addOnSuccessListener {
                 result = "Registro agregado"
             }.addOnFailureListener {

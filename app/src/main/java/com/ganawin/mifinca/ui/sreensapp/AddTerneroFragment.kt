@@ -36,6 +36,7 @@ class AddTerneroFragment : Fragment(R.layout.fragment_add_ternero) {
     private var sexo: String =""
     private var UserUid: String = ""
     private var URL: String = ""
+    private var idPhoto: String = ""
 
     private lateinit var mStorageReference: StorageReference
 
@@ -147,6 +148,7 @@ class AddTerneroFragment : Fragment(R.layout.fragment_add_ternero) {
                         it.storage.downloadUrl.addOnSuccessListener {
                             URL = it.toString()
                         }
+                        idPhoto = it.storage.name
                         /*
                         val namePhoto = it.storage.name
                         Log.d("namePhotoUri", namePhoto)
@@ -204,7 +206,7 @@ class AddTerneroFragment : Fragment(R.layout.fragment_add_ternero) {
         val raza = binding.etRaza.text.toString().trim()
 
         val ternero: MutableList<String> = mutableListOf(fecha_nacimiento, sexo, madre, padre, raza,
-                     URL)
+                     URL, idPhoto)
 
         viewModel.setNewTernero(ternero, UserUid).observe(viewLifecycleOwner, { result->
             when(result){
