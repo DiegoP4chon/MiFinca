@@ -16,6 +16,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.ganawin.mifinca.R
+import com.ganawin.mifinca.core.CurrentUser
 import com.ganawin.mifinca.core.Resource
 import com.ganawin.mifinca.data.remote.terneros.TernerosDataSource
 import com.ganawin.mifinca.databinding.FragmentTernerosBinding
@@ -34,7 +35,6 @@ import kotlin.collections.HashMap
 class TernerosFragment : Fragment(R.layout.fragment_terneros), OnClickListener {
 
     private lateinit var binding: FragmentTernerosBinding
-    private val firebaseAuth by lazy { FirebaseAuth.getInstance() }
     private lateinit var userUIDColecction: String
     private lateinit var mStorageReference: StorageReference
     private val mapTernero: HashMap<String, Any> = hashMapOf()
@@ -57,7 +57,7 @@ class TernerosFragment : Fragment(R.layout.fragment_terneros), OnClickListener {
 
 
     private fun showTerneros() {
-        viewModel.fetchListTerneros(userUIDColecction).observe(viewLifecycleOwner, Observer { result ->
+        viewModel.fetchListTerneros(userUIDColecction).observe(viewLifecycleOwner, { result ->
             when(result){
                 is Resource.Loading -> {}
                 is Resource.Success -> {
@@ -259,8 +259,6 @@ class TernerosFragment : Fragment(R.layout.fragment_terneros), OnClickListener {
     }
 
     private fun userUid() {
-        firebaseAuth.currentUser?.let {
-            userUIDColecction = "terneros${firebaseAuth.currentUser!!.uid}"
-        }
+        userUIDColecction = "terneros${CurrentUser().userUid()}"
     }
 }

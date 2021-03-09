@@ -7,12 +7,100 @@
     tools:context=".ui.leche.LecheFragment">
 
     <TextView
+        android:id="@+id/tvTitleLeche"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Registros leche"
+        android:layout_marginTop="@dimen/common_min_padding"
+        android:textSize="@dimen/title_leche"
+        android:text="@string/registros_leche"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        style="@style/TextAppearance.MaterialComponents.Body1"/>
+
+    <TextView
+        android:id="@+id/subTitleDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fecha_actual"
+        android:layout_marginStart="@dimen/common_min_padding"
+        app:layout_constraintTop_toTopOf="@id/tilFecha"
+        app:layout_constraintBottom_toBottomOf="@id/tilFecha"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTitleLeche"
+        style="@style/TextAppearance.MaterialComponents.Subtitle2"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilFecha"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/common_default_padding"
+        android:layout_marginTop="@dimen/common_min_padding"
+        android:layout_marginEnd="@dimen/common_default_padding"
+        android:focusable="true"
+        app:startIconDrawable="@drawable/ic_calendar"
+        app:layout_constraintStart_toEndOf="@id/subTitleDate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTitleLeche"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etFechaActual"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:enabled="true" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilEntregaLeche"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_Litros_Entregados"
+        app:startIconDrawable="@drawable/ic_cantina"
+        app:layout_constraintStart_toStartOf="@id/tilFecha"
+        app:layout_constraintEnd_toEndOf="@id/tilFecha"
+        app:layout_constraintTop_toBottomOf="@id/tilFecha"
+        android:layout_marginTop="@dimen/common_default_padding"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etEntregaLeche"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="number" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/subTitleEntrega"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/litros_entregados"
+        android:layout_marginStart="@dimen/common_min_padding"
+        app:layout_constraintTop_toTopOf="@id/tilEntregaLeche"
+        app:layout_constraintBottom_toBottomOf="@id/tilEntregaLeche"
+        app:layout_constraintStart_toStartOf="parent"
+        style="@style/TextAppearance.MaterialComponents.Subtitle2"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnRegisterLeche"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/btn_registrar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tilEntregaLeche"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvLeche"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/common_default_padding"
+        android:orientation="vertical"
+        android:clipToPadding="false"
+        tools:listitem = "@layout/item_leche"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnRegisterLeche"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

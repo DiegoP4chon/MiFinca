@@ -40,4 +40,8 @@
     <string name="btnSaveChanges">Guardar cambios</string>
     <string name="description_datePicker">imagen boton calendar</string>
     <string name="description_exitUpdate">imagen boton cancelar actualizado</string>
+    <string name="registros_leche">Entregas de leche</string>
+    <string name="fecha_actual">Fecha actual:</string>
+    <string name="litros_entregados">Entrega:</string>
+    <string name="hint_Litros_Entregados">Litros entregados</string>
 </resources>
