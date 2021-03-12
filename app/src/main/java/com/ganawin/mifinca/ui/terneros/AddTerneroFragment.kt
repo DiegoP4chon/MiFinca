@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.CalendarView
 import android.widget.Toast
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import com.ganawin.mifinca.R
 import com.ganawin.mifinca.core.Resource
@@ -214,6 +215,7 @@ class AddTerneroFragment : Fragment(R.layout.fragment_add_ternero) {
                 }
                 is Resource.Success -> {
                     Toast.makeText(requireContext(), result.data, Toast.LENGTH_LONG).show()
+                    activity?.onBackPressed()
                 }
                 is Resource.Failure -> {
                     Toast.makeText(requireContext(), "Error: ${result.exception}", Toast.LENGTH_SHORT)

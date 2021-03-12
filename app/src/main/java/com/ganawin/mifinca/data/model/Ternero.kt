@@ -1,6 +1,7 @@
 package com.ganawin.mifinca.data.model
 
 data class Ternero(
+    val id: Int = 0,
     val date_nacimiento: String = "",
     val sexo: String = "",
     val madre: String = "",

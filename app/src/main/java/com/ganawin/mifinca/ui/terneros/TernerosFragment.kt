@@ -17,6 +17,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.ganawin.mifinca.R
 import com.ganawin.mifinca.core.CurrentUser
+import com.ganawin.mifinca.core.GenerateId
 import com.ganawin.mifinca.core.Resource
 import com.ganawin.mifinca.data.remote.terneros.TernerosDataSource
 import com.ganawin.mifinca.databinding.FragmentTernerosBinding
@@ -37,7 +38,7 @@ class TernerosFragment : Fragment(R.layout.fragment_terneros), OnClickListener {
     private lateinit var binding: FragmentTernerosBinding
     private lateinit var userUIDColecction: String
     private lateinit var mStorageReference: StorageReference
-    private val mapTernero: HashMap<String, Any> = hashMapOf()
+    private var mapTernero: HashMap<String, Any> = hashMapOf()
     private var idPhoto: String = ""
 
     private val viewModel by viewModels<TerneroScreenViewModel> { TerneroScreenViewModelFactory(
@@ -121,6 +122,7 @@ class TernerosFragment : Fragment(R.layout.fragment_terneros), OnClickListener {
             val raza = binding.etUpdateRaza.text.toString().trim()
 
             mapTernero["date_nacimiento"] = fechaNacimeinto
+            mapTernero["id"] = GenerateId().generateID(fechaNacimeinto)
             mapTernero["sexo"] = sexo
             mapTernero["madre"] = madre
             mapTernero["padre"] = padre
@@ -213,7 +215,7 @@ class TernerosFragment : Fragment(R.layout.fragment_terneros), OnClickListener {
                                     .show()
                             binding.cvEditTernero.visibility = View.GONE
                             binding.fbtnAddTernero.visibility = View.VISIBLE
-                            //Log.d("ModificandoRegistros", "resultado: ${result.data}")
+                            this.mapTernero = hashMapOf()
                             showTerneros()
                         }
                         is Resource.Failure -> {
