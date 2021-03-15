@@ -13,4 +13,12 @@ class LecheRepoImpl(private val dataSource: LecheDataSource): LecheRepo {
     override suspend fun getListLeche(collection: String): List<Leche> {
         return  dataSource.getListLeche(collection)
     }
+
+    override suspend fun getListLecheFilter(
+        collection: String,
+        idInicio: Int,
+        idFin: Int
+    ): List<Leche> {
+        return  dataSource.getListLecheFilter(collection, idInicio, idFin)
+    }
 }

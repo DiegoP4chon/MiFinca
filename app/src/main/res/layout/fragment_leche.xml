@@ -24,31 +24,24 @@
         android:layout_height="wrap_content"
         android:text="@string/fecha_actual"
         android:layout_marginStart="@dimen/common_min_padding"
-        app:layout_constraintTop_toTopOf="@id/tilFecha"
-        app:layout_constraintBottom_toBottomOf="@id/tilFecha"
+        app:layout_constraintTop_toTopOf="@id/btnFecha"
+        app:layout_constraintBottom_toBottomOf="@id/btnFecha"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvTitleLeche"
         style="@style/TextAppearance.MaterialComponents.Subtitle2"/>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilFecha"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnFecha"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/common_default_padding"
-        android:layout_marginTop="@dimen/common_min_padding"
         android:layout_marginEnd="@dimen/common_default_padding"
-        android:focusable="true"
-        app:startIconDrawable="@drawable/ic_calendar"
+        android:layout_marginTop="@dimen/common_default_padding"
+        app:icon="@drawable/ic_calendar"
         app:layout_constraintStart_toEndOf="@id/subTitleDate"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvTitleLeche"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etFechaActual"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:enabled="true" />
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton">
+    </com.google.android.material.button.MaterialButton>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilEntregaLeche"
@@ -56,9 +49,9 @@
         android:layout_height="wrap_content"
         android:hint="@string/hint_Litros_Entregados"
         app:startIconDrawable="@drawable/ic_cantina"
-        app:layout_constraintStart_toStartOf="@id/tilFecha"
-        app:layout_constraintEnd_toEndOf="@id/tilFecha"
-        app:layout_constraintTop_toBottomOf="@id/tilFecha"
+        app:layout_constraintStart_toStartOf="@id/btnFecha"
+        app:layout_constraintEnd_toEndOf="@id/btnFecha"
+        app:layout_constraintTop_toBottomOf="@id/btnFecha"
         android:layout_marginTop="@dimen/common_default_padding"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <com.google.android.material.textfield.TextInputEditText
@@ -89,6 +82,66 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tilEntregaLeche"/>
 
+    <ImageButton
+        android:id="@+id/btnFilterLeche"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_filter_leche"
+        android:contentDescription="@string/image_btn_filtrar"
+        android:layout_marginEnd="@dimen/common_default_padding"
+        app:layout_constraintTop_toTopOf="@id/btnRegisterLeche"
+        app:layout_constraintBottom_toBottomOf="@id/btnRegisterLeche"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cvFiltro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/common_default_padding"
+        android:layout_marginHorizontal="@dimen/common_min_padding"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnRegisterLeche">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnFilterFechaInicio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Fecha_Inicial"
+                app:icon="@drawable/ic_calendar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnFilterFechaFin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fecha_fin"
+                app:icon="@drawable/ic_calendar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnFiltrar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/listo"
+                android:layout_marginTop="@dimen/common_min_padding"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnFilterFechaInicio"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvLeche"
         android:layout_width="0dp"
@@ -99,8 +152,20 @@
         tools:listitem = "@layout/item_leche"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnRegisterLeche"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cvFiltro"
+        app:layout_constraintBottom_toTopOf="@id/btnConsultarPago"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnConsultarPago"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/producido_leche"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="@dimen/common_min_padding"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

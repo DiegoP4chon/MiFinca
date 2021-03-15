@@ -44,4 +44,15 @@
     <string name="fecha_actual">Fecha actual:</string>
     <string name="litros_entregados">Entrega:</string>
     <string name="hint_Litros_Entregados">Litros entregados</string>
+    <string name="image_btn_filtrar">imagen boton filtrar leche</string>
+    <string name="producido_leche">Producido</string>
+    <string name="Fecha_Inicial">fecha inicio</string>
+    <string name="fecha_fin">Fecha final</string>
+    <string name="listo">Listo</string>
+    <string name="alert_select_date">Selecciona fecha de inicio y final</string>
+    <string name="alert_date_range">La fecha inicial no puede ser superior a la final</string>
+    <string name="precio_litro_leche">Indique el precio del litro de leche</string>
+    <string name="total_producido">Total producido</string>
+    <string name="litros">litros</string>
+    <string name="btn_calcular_paga">Calcular</string>
 </resources>

@@ -26,6 +26,15 @@ class LecheScreenViewModel(private val repo: LecheRepo): ViewModel() {
             emit(Resource.Failure(e))
         }
     }
+
+    fun getListLecheFilter(collection: String, idInicio: Int, idFin:Int) = liveData {
+        emit(Resource.Loading())
+        try {
+            emit(Resource.Success(repo.getListLecheFilter(collection, idInicio, idFin)))
+        } catch (e : Exception) {
+            emit(Resource.Failure(e))
+        }
+    }
 }
 
 class LecheScreenViewModelFactory(private val repo: LecheRepo): ViewModelProvider.Factory{

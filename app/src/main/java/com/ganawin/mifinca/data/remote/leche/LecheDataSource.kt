@@ -33,23 +33,26 @@ class LecheDataSource {
         val querySnapshot = firebaseFirestore.collection(collection)
                 .orderBy("id", Query.Direction.DESCENDING).get().await()
 
-        /*val queryAsigned = firebaseFirestore.collection(collection)
-                .whereGreaterThanOrEqualTo("id", 20190311)
-                .whereLessThanOrEqualTo("id", 20201110)
-                .orderBy("id", Query.Direction.DESCENDING).get().await()
-        val listLecheOrder = mutableListOf<Leche>()
-        for (listaEntrge in queryAsigned.documents){
-            listaEntrge.toObject(Leche::class.java)?.let {
-                listLecheOrder.add(it)
-            }
-        }
-        Log.d("listaLecheOrder", listLecheOrder.toString())*/
-
         for (entregaLeche in querySnapshot.documents){
             entregaLeche.toObject(Leche::class.java)?.let { fbLeche ->
                 lecheList.add(fbLeche)
             }
         }
         return lecheList
+    }
+
+    suspend fun getListLecheFilter(collection: String, idInicio: Int, idFin:Int): List<Leche>{
+        val queryAsigned = firebaseFirestore.collection(collection)
+                .whereGreaterThanOrEqualTo("id", idInicio)
+                .whereLessThanOrEqualTo("id", idFin)
+                .orderBy("id", Query.Direction.DESCENDING).get().await()
+        val listLecheFilter = mutableListOf<Leche>()
+        for (listaEntrge in queryAsigned.documents){
+            listaEntrge.toObject(Leche::class.java)?.let {
+                listLecheFilter.add(it)
+            }
+        }
+        Log.d("listaLecheOrder", listLecheFilter.toString())
+        return listLecheFilter
     }
 }

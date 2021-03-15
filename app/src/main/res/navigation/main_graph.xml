@@ -55,5 +55,14 @@
         android:id="@+id/lecheFragment"
         android:name="com.ganawin.mifinca.ui.leche.LecheFragment"
         android:label="fragment_leche"
-        tools:layout="@layout/fragment_leche" />
+        tools:layout="@layout/fragment_leche" >
+        <action
+            android:id="@+id/action_lecheFragment_to_producidoFragment"
+            app:destination="@id/producidoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/producidoFragment"
+        android:name="com.ganawin.mifinca.ui.leche.ProducidoFragment"
+        android:label="fragment_producido"
+        tools:layout="@layout/fragment_producido" />
 </navigation>
