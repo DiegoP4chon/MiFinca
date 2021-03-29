@@ -58,4 +58,15 @@
     <string name="btn_update">Modificar registro</string>
     <string name="update">Modificar</string>
     <string name="registros_leche_modified">Modificando entrega</string>
+    <string name="registros_ventas">Ventas de ganado</string>
+    <string name="btn_add_venta">Boton agregar venta</string>
+    <string name="img_venta">imagen de venta</string>
+    <string name="registros_nueva_venta">Registrar nueva venta</string>
+    <string name="fecha_de_venta">Fecha de venta</string>
+    <string name="seleccione_fecha">Seleccionar</string>
+    <string name="hint_venta">Venta realizada</string>
+    <string name="hint_comprador">Nombre del comprador</string>
+    <string name="hint_valor">Precio de venta</string>
+    <string name="pregunta_subir_foto">Presione si desea subir una foto</string>
+    <string name="no_subir_foto">No deseo subir alguna foto</string>
 </resources>

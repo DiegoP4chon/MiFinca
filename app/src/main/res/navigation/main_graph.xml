@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_homeFragment_to_lecheFragment"
             app:destination="@id/lecheFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_ventasFragment"
+            app:destination="@id/ventasFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerUserFragment"
@@ -65,4 +68,18 @@
         android:name="com.ganawin.mifinca.ui.leche.ProducidoFragment"
         android:label="fragment_producido"
         tools:layout="@layout/fragment_producido" />
+    <fragment
+        android:id="@+id/ventasFragment"
+        android:name="com.ganawin.mifinca.ui.ventas.VentasFragment"
+        android:label="fragment_ventas"
+        tools:layout="@layout/fragment_ventas" >
+        <action
+            android:id="@+id/action_ventasFragment_to_addVentaFragment"
+            app:destination="@id/addVentaFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addVentaFragment"
+        android:name="com.ganawin.mifinca.ui.ventas.AddVentaFragment"
+        android:label="fragment_add_venta"
+        tools:layout="@layout/fragment_add_venta" />
 </navigation>

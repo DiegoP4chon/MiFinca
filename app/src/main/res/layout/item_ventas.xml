@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="@dimen/common_min_padding">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imgVenta"
+            android:layout_width="@dimen/common_image_padding"
+            android:layout_height="@dimen/common_image_padding"
+            android:background="@color/design_default_color_secondary_variant"
+            android:contentDescription="@string/img_venta"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvIdentificacionVenta"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/common_default_padding"
+            app:layout_constraintBottom_toTopOf="@+id/tvFechaVenta"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@id/imgVenta"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Vaca holstein roja" />
+
+        <TextView
+            android:id="@+id/tvFechaVenta"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/common_default_padding"
+            app:layout_constraintBottom_toTopOf="@+id/tvCompradorVenta"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@id/imgVenta"
+            app:layout_constraintTop_toBottomOf="@+id/tvIdentificacionVenta"
+            tools:text="Fecha: 22/3/2021" />
+
+        <TextView
+            android:id="@+id/tvCompradorVenta"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/common_default_padding"
+            app:layout_constraintBottom_toTopOf="@+id/tvPrecioVenta"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@id/imgVenta"
+            app:layout_constraintTop_toBottomOf="@+id/tvFechaVenta"
+            tools:text="Compro: Fabio Pachon" />
+
+        <TextView
+            android:id="@+id/tvPrecioVenta"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/common_default_padding"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@id/imgVenta"
+            app:layout_constraintTop_toBottomOf="@+id/tvCompradorVenta"
+            tools:text="Valor: 1500000" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

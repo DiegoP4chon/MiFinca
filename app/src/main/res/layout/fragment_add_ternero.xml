@@ -143,7 +143,7 @@
             android:layout_marginBottom="@dimen/common_default_padding"
             android:focusable="true"
             android:clickable="true"
-            android:text="No deseo subir alguna foto"
+            android:text="@string/no_subir_foto"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btnUpload"

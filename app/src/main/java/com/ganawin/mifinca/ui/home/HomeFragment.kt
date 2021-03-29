@@ -28,6 +28,7 @@ class HomeFragment : Fragment(R.layout.fragment_home,) {
         binding.btncloseSession.setOnClickListener { signOff() }
         binding.btnTerneros.setOnClickListener { screenTerneros() }
         binding.btnMilk.setOnClickListener { screenLeche() }
+        binding.btnVentas.setOnClickListener { screenVentas() }
 
     }
 
@@ -37,6 +38,10 @@ class HomeFragment : Fragment(R.layout.fragment_home,) {
 
     private fun screenTerneros() {
         findNavController().navigate(R.id.action_homeFragment_to_ternerosFragment)
+    }
+
+    private  fun screenVentas(){
+        findNavController().navigate(R.id.action_homeFragment_to_ventasFragment)
     }
 
     private fun signOff(){
