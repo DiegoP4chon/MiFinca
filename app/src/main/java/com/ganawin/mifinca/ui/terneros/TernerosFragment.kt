@@ -24,16 +24,15 @@ import com.ganawin.mifinca.databinding.FragmentTernerosBinding
 import com.ganawin.mifinca.domain.terneros.TerneroRepoImpl
 import com.ganawin.mifinca.presentation.ternero.TerneroScreenViewModel
 import com.ganawin.mifinca.presentation.ternero.TerneroScreenViewModelFactory
-import com.ganawin.mifinca.ui.terneros.adapter.OnClickListener
+import com.ganawin.mifinca.ui.terneros.adapter.OnClickListenerTernero
 import com.ganawin.mifinca.ui.terneros.adapter.TerneroSreenAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.util.*
 import kotlin.collections.HashMap
 
-class TernerosFragment : Fragment(R.layout.fragment_terneros), OnClickListener {
+class TernerosFragment : Fragment(R.layout.fragment_terneros), OnClickListenerTernero {
 
     private lateinit var binding: FragmentTernerosBinding
     private lateinit var userUIDColecction: String

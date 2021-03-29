@@ -6,6 +6,7 @@ import androidx.lifecycle.liveData
 import com.ganawin.mifinca.core.Resource
 import com.ganawin.mifinca.data.model.Leche
 import com.ganawin.mifinca.domain.leche.LecheRepo
+import java.util.HashMap
 
 class LecheScreenViewModel(private val repo: LecheRepo): ViewModel() {
 
@@ -32,6 +33,15 @@ class LecheScreenViewModel(private val repo: LecheRepo): ViewModel() {
         try {
             emit(Resource.Success(repo.getListLecheFilter(collection, idInicio, idFin)))
         } catch (e : Exception) {
+            emit(Resource.Failure(e))
+        }
+    }
+
+    fun updateRegistroLeche(collection: String, document: String, map: HashMap<String, Any>) = liveData {
+        emit(Resource.Loading())
+        try {
+            emit(Resource.Success(repo.updateRegistroLeche(collection, document, map)))
+        } catch (e: Exception){
             emit(Resource.Failure(e))
         }
     }

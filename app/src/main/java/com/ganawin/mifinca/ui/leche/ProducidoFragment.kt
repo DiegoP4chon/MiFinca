@@ -3,13 +3,9 @@ package com.ganawin.mifinca.ui.leche
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import com.ganawin.mifinca.R
 import com.ganawin.mifinca.databinding.FragmentProducidoBinding
-import com.ganawin.mifinca.databinding.ItemLecheBinding
-import com.google.android.material.snackbar.Snackbar
 
 class ProducidoFragment : Fragment(R.layout.fragment_producido) {
 

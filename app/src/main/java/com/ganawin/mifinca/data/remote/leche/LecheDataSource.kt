@@ -2,6 +2,7 @@ package com.ganawin.mifinca.data.remote.leche
 
 import android.util.Log
 import com.ganawin.mifinca.core.GenerateId
+import com.ganawin.mifinca.core.Resource
 import com.ganawin.mifinca.data.model.Leche
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -17,7 +18,7 @@ class LecheDataSource {
         val nameDocument = "${UUID.randomUUID()}"
         val id = GenerateId().generateID(fecha)
         firebaseFirestore.collection(collection).document(nameDocument)
-                .set(Leche(id, fecha, litros))
+                .set(Leche(nameDocument, id, fecha, litros))
                 .addOnSuccessListener {
                     result = "Entrega registrada"
                 }
@@ -54,5 +55,16 @@ class LecheDataSource {
         }
         Log.d("listaLecheOrder", listLecheFilter.toString())
         return listLecheFilter
+    }
+
+    suspend fun updateRegistroLeche(collection: String, document: String, map: HashMap<String, Any>): Resource<String>{
+        firebaseFirestore.collection(collection).document(document).update(map)
+                .addOnSuccessListener {
+                    result = "Entrega modificada"
+                }
+                .addOnFailureListener {
+                    result = it.toString()
+                }.await()
+        return Resource.Success(result)
     }
 }

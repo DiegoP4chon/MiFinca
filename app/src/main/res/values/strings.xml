@@ -55,4 +55,7 @@
     <string name="total_producido">Total producido</string>
     <string name="litros">litros</string>
     <string name="btn_calcular_paga">Calcular</string>
+    <string name="btn_update">Modificar registro</string>
+    <string name="update">Modificar</string>
+    <string name="registros_leche_modified">Modificando entrega</string>
 </resources>

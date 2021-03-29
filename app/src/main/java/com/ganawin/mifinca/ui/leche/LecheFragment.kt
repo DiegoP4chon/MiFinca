@@ -20,9 +20,12 @@ import com.ganawin.mifinca.domain.leche.LecheRepoImpl
 import com.ganawin.mifinca.presentation.leche.LecheScreenViewModel
 import com.ganawin.mifinca.presentation.leche.LecheScreenViewModelFactory
 import com.ganawin.mifinca.ui.leche.adapter.LecheScreenAdapter
+import com.ganawin.mifinca.ui.leche.adapter.OnClickListenerLeche
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.*
+import kotlin.collections.HashMap
 
-class LecheFragment : Fragment(R.layout.fragment_leche) {
+class LecheFragment : Fragment(R.layout.fragment_leche), OnClickListenerLeche {
 
     private lateinit var binding: FragmentLecheBinding
     private val viewModel by viewModels<LecheScreenViewModel>
@@ -33,6 +36,7 @@ class LecheFragment : Fragment(R.layout.fragment_leche) {
     private var month = 0
     private var day = 0
     private lateinit var lecheListFilter: List<Leche>
+    private var isModified = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,6 +45,7 @@ class LecheFragment : Fragment(R.layout.fragment_leche) {
         userUID()
         obtenerLeche()
         fechaActual()
+        configureButtonAndTitle()
         binding.btnFecha.setOnClickListener { showDatePicker(0) }
         binding.btnFilterLeche.setOnClickListener { activeFilter() }
         binding.btnFilterFechaInicio.setOnClickListener { showDatePicker(1) }
@@ -49,6 +54,16 @@ class LecheFragment : Fragment(R.layout.fragment_leche) {
         binding.btnConsultarPago.setOnClickListener { calcularProducido() }
         binding.btnRegisterLeche.setOnClickListener { registrarLeche() }
 
+    }
+
+    private fun configureButtonAndTitle() {
+        if(isModified){
+            binding.tvTitleLeche.text = getString(R.string.registros_leche_modified)
+            binding.btnRegisterLeche.text = getString(R.string.update)
+        } else {
+            binding.tvTitleLeche.text = getString(R.string.registros_leche)
+            binding.btnRegisterLeche.text = getString(R.string.btn_registrar)
+        }
     }
 
     private fun calcularProducido() {
@@ -84,7 +99,7 @@ class LecheFragment : Fragment(R.layout.fragment_leche) {
                 is Resource.Loading -> {}
                 is Resource.Success -> {
                     lecheListFilter = result.data
-                    binding.rvLeche.adapter = LecheScreenAdapter(lecheListFilter)
+                    binding.rvLeche.adapter = LecheScreenAdapter(lecheListFilter, this)
                     binding.cvFiltro.visibility = View.GONE
                     binding.btnConsultarPago.visibility = View.VISIBLE
                 }
@@ -109,7 +124,7 @@ class LecheFragment : Fragment(R.layout.fragment_leche) {
             when(result){
                 is Resource.Loading -> {}
                 is Resource.Success -> {
-                    binding.rvLeche.adapter = LecheScreenAdapter(result.data)
+                    binding.rvLeche.adapter = LecheScreenAdapter(result.data, this)
                 }
                 is Resource.Failure -> {
                     Log.d("VerLeche", "Error ${result.exception}")
@@ -129,15 +144,19 @@ class LecheFragment : Fragment(R.layout.fragment_leche) {
     }
 
     private fun showDatePicker(item: Int){
-        val datePickerDialog = DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener{
+        val datePickerDialog = DatePickerDialog(requireContext(), {
                 view, year, month, dayOfMonth ->
             val newFecha = "$dayOfMonth/${month+1}/$year"
-            if(item == 0) {
-                binding.btnFecha.text = newFecha
-            }else if(item == 1){
-                binding.btnFilterFechaInicio.text = newFecha
-            }else if(item == 2){
-                binding.btnFilterFechaFin.text = newFecha
+            when (item) {
+                0 -> {
+                    binding.btnFecha.text = newFecha
+                }
+                1 -> {
+                    binding.btnFilterFechaInicio.text = newFecha
+                }
+                2 -> {
+                    binding.btnFilterFechaFin.text = newFecha
+                }
             }
         }, year, month, day)
 
@@ -161,13 +180,68 @@ class LecheFragment : Fragment(R.layout.fragment_leche) {
                         obtenerLeche()
                     }
                     is Resource.Failure -> {
-                        Toast.makeText(requireContext(), "Ha ocurrido un error", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "${result.exception}", Toast.LENGTH_SHORT).show()
                     }
                 }
             })
         } else {
-            binding.tilEntregaLeche.error = "Requerido"
+            binding.tilEntregaLeche.error = getString(R.string.require)
         }
 
+    }
+
+    override fun onCLickItemLeche(document: String, itemLeche: MutableList<String>) {
+        MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.dialog_update)
+                .setPositiveButton(R.string.btn_update) { dialogInterface, i ->
+                    updateRegistroLeche(document, itemLeche)
+                }
+                .setNegativeButton(R.string.btn_cancelar_delete_ternero, null)
+                .show()
+    }
+
+    private fun updateRegistroLeche(document: String, itemLeche: MutableList<String>) {
+        isModified = true
+        configureButtonAndTitle()
+        binding.btnFecha.text = itemLeche[0]
+        binding.etEntregaLeche.setText(itemLeche[2])
+
+
+            binding.btnRegisterLeche.setOnClickListener {
+                if(isModified){
+                    if(binding.etEntregaLeche.text.toString().trim().isEmpty()){
+                        binding.tilEntregaLeche.error = getString(R.string.require)
+                    } else {
+                        val mapLeche: HashMap<String, Any> = hashMapOf()
+                        mapLeche["fecha"] = binding.btnFecha.text.toString()
+                        mapLeche["id"] = GenerateId().generateID(binding.btnFecha.text.toString())
+                        mapLeche["litros"] = binding.etEntregaLeche.text.toString().trim().toInt()
+
+                        updateLeche(mapLeche, document)
+                    }
+                } else {registrarLeche()}
+
+            }
+    }
+
+    private fun updateLeche(mapLeche: HashMap<String, Any>, document: String) {
+        viewModel.updateRegistroLeche(UserUIDCollection, document, mapLeche)
+                .observe(viewLifecycleOwner, { result ->
+                    when(result){
+                        is Resource.Loading -> {}
+                        is Resource.Success -> {
+                            isModified = false
+                            binding.etEntregaLeche.setText("")
+                            configureButtonAndTitle()
+                            obtenerLeche()
+                            Toast.makeText(requireContext(), "${result.data}", Toast.LENGTH_SHORT)
+                                    .show()
+                        }
+                        is Resource.Failure -> {
+                            Toast.makeText(requireContext(), "Ha ocurrido un error", Toast.LENGTH_SHORT)
+                                    .show()
+                        }
+                    }
+                })
     }
 }

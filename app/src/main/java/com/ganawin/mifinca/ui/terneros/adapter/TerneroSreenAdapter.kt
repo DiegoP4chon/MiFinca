@@ -10,7 +10,7 @@ import com.ganawin.mifinca.core.CalculateEdad
 import com.ganawin.mifinca.data.model.Ternero
 import com.ganawin.mifinca.databinding.ItemTerneroBinding
 
-class TerneroSreenAdapter(private val ternerosList: List<Ternero>, private var listener: OnClickListener): RecyclerView.Adapter<BaseViewHolder<*>>() {
+class TerneroSreenAdapter(private val ternerosList: List<Ternero>, private var listenerTernero: OnClickListenerTernero): RecyclerView.Adapter<BaseViewHolder<*>>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
         val itemBinding = ItemTerneroBinding.inflate(LayoutInflater.from(parent.context), parent,
@@ -50,7 +50,7 @@ class TerneroSreenAdapter(private val ternerosList: List<Ternero>, private var l
                 itemTernero.add(item.padre)
                 itemTernero.add(item.raza)
                 itemTernero.add(item.idPhoto)
-            binding.root.setOnClickListener { listener.onLongClick(item.document, itemTernero)}
+            binding.root.setOnClickListener { listenerTernero.onLongClick(item.document, itemTernero)}
         }
     }
 }
