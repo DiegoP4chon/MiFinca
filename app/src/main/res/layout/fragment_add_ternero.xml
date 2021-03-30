@@ -121,7 +121,7 @@
             android:layout_height="wrap_content"
             android:text="@string/upload_photo"
             android:layout_marginTop="@dimen/common_default_padding"
-            app:icon="@drawable/ic_add_tern"
+            app:icon="@drawable/ic_add_foto"
             app:layout_constraintStart_toStartOf="@id/tilRaza"
             app:layout_constraintTop_toBottomOf="@id/tilRaza"/>
 

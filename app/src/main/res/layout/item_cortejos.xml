@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="@dimen/common_min_padding">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tvFechaCortejo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="22/2/2020" />
+
+        <ImageView
+            android:id="@+id/imgMachoCortejo"
+            android:layout_width="@dimen/common_image_padding"
+            android:layout_height="@dimen/common_image_padding"
+            android:layout_marginTop="@dimen/common_min_padding"
+            android:background="@color/design_default_color_secondary_variant"
+            android:contentDescription="@string/img_macho"
+            app:layout_constraintEnd_toEndOf="@id/guideline3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvFechaCortejo" />
+
+        <ImageView
+            android:id="@+id/imgHembraCortejo"
+            android:layout_width="@dimen/common_image_padding"
+            android:layout_height="@dimen/common_image_padding"
+            android:layout_marginTop="@dimen/common_min_padding"
+            android:background="@color/design_default_color_secondary_variant"
+            android:contentDescription="@string/img_hembra"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guideline3"
+            app:layout_constraintTop_toBottomOf="@id/tvFechaCortejo" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="205dp" />
+
+        <TextView
+            android:id="@+id/tvDescripMacho"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="Toro blanco"
+            android:layout_marginHorizontal="@dimen/common_min_padding"
+            android:textAlignment="center"
+            android:layout_marginTop="@dimen/common_min_padding"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/guideline3"
+            app:layout_constraintTop_toBottomOf="@id/imgMachoCortejo"/>
+
+        <TextView
+            android:id="@+id/tvRazaMachoCortejo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="Holstein"
+            android:textAlignment="center"
+            android:layout_marginHorizontal="@dimen/common_min_padding"
+            android:layout_marginTop="@dimen/common_min_padding"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/guideline3"
+            app:layout_constraintTop_toBottomOf="@id/tvDescripMacho"/>
+
+        <TextView
+            android:id="@+id/tvDescripHembra"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="Vaca varsina"
+            android:textAlignment="center"
+            android:layout_marginHorizontal="@dimen/common_min_padding"
+            android:layout_marginTop="@dimen/common_min_padding"
+            app:layout_constraintStart_toStartOf="@id/guideline3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imgMachoCortejo"/>
+
+        <TextView
+            android:id="@+id/tvRazaHembraCortejo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="Normanda"
+            android:textAlignment="center"
+            android:layout_marginHorizontal="@dimen/common_min_padding"
+            android:layout_marginTop="@dimen/common_min_padding"
+            app:layout_constraintStart_toStartOf="@id/guideline3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvDescripHembra"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -4,9 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
 import com.ganawin.mifinca.core.Resource
-import com.ganawin.mifinca.domain.terneros.TerneroRepo
 import com.ganawin.mifinca.domain.ventas.VentasRepo
-import com.ganawin.mifinca.presentation.ternero.TerneroScreenViewModel
 import java.util.HashMap
 
 class VentasScreenViewModel(private val repo: VentasRepo): ViewModel() {

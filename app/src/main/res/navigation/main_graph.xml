@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_homeFragment_to_ventasFragment"
             app:destination="@id/ventasFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_cortejosFragment"
+            app:destination="@id/cortejosFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerUserFragment"
@@ -82,4 +85,18 @@
         android:name="com.ganawin.mifinca.ui.ventas.AddVentaFragment"
         android:label="fragment_add_venta"
         tools:layout="@layout/fragment_add_venta" />
+    <fragment
+        android:id="@+id/cortejosFragment"
+        android:name="com.ganawin.mifinca.ui.cortejos.CortejosFragment"
+        android:label="fragment_cortejos"
+        tools:layout="@layout/fragment_cortejos" >
+        <action
+            android:id="@+id/action_cortejosFragment_to_addCortejoFragment"
+            app:destination="@id/addCortejoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addCortejoFragment"
+        android:name="com.ganawin.mifinca.ui.cortejos.AddCortejoFragment"
+        android:label="fragment_add_cortejo"
+        tools:layout="@layout/fragment_add_cortejo" />
 </navigation>

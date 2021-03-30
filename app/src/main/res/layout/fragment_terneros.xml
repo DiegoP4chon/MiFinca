@@ -189,7 +189,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/common_default_padding"
         android:contentDescription="@string/btn_add_ternero"
-        android:src="@drawable/ic_add_tern"
+        android:src="@drawable/ic_add_foto"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.cortejos.AddCortejoFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tvTitleAnadirCortejo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_min_padding"
+            android:textSize="@dimen/title_fragments"
+            android:text="@string/registros_nuevo_cortejo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/TextAppearance.MaterialComponents.Body1"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnFechaCortejo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/common_default_padding"
+            android:layout_marginTop="@dimen/common_default_padding"
+            app:icon="@drawable/ic_calendar"
+            android:text="@string/seleccione_fecha"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTitleAnadirCortejo"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+        <TextView
+            android:id="@+id/tvCaracteristicasMacho"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_default_padding"
+            android:text="@string/caracteriticas_macho"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnFechaCortejo"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilMachoCortejo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_macho_cortejo"
+            android:layout_marginTop="@dimen/common_default_padding"
+            android:layout_marginHorizontal="@dimen/common_default_padding"
+            app:endIconMode="clear_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvCaracteristicasMacho"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etMachoCortejo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="text"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilMachoRaza"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_raza"
+            android:layout_marginTop="@dimen/common_default_padding"
+            android:layout_marginHorizontal="@dimen/common_default_padding"
+            app:endIconMode="clear_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilMachoCortejo"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etMachoRaza"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="text"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAddPhotoMacho"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_default_padding"
+            app:icon="@drawable/ic_add_foto"
+            android:text="@string/upload_photo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilMachoRaza"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+        <ImageView
+            android:id="@+id/imgUploadCortejoMacho"
+            android:layout_width="0dp"
+            android:layout_height="250dp"
+            android:layout_marginHorizontal="@dimen/common_default_padding"
+            android:layout_marginTop="@dimen/common_default_padding"
+            android:contentDescription="@string/img_upload"
+            android:visibility="gone"
+            android:background="@color/design_default_color_secondary_variant"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnAddPhotoMacho"/>
+
+        <TextView
+            android:id="@+id/tvCaracteristicasHembra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_default_padding"
+            android:text="@string/caracteriticas_hembra"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imgUploadCortejoMacho"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilHembraCortejo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_hembra_cortejo"
+            android:layout_marginTop="@dimen/common_default_padding"
+            android:layout_marginHorizontal="@dimen/common_default_padding"
+            app:endIconMode="clear_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvCaracteristicasHembra"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etHembraCortejo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="text"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilHembraRaza"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_raza"
+            android:layout_marginTop="@dimen/common_default_padding"
+            android:layout_marginHorizontal="@dimen/common_default_padding"
+            app:endIconMode="clear_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilHembraCortejo"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etHembraRaza"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="text"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAddPhotoHembra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_default_padding"
+            app:icon="@drawable/ic_add_foto"
+            android:text="@string/upload_photo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilHembraRaza"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+        <ImageView
+            android:id="@+id/imgUploadCortejoHembra"
+            android:layout_width="0dp"
+            android:layout_height="250dp"
+            android:layout_marginHorizontal="@dimen/common_default_padding"
+            android:layout_marginTop="@dimen/common_default_padding"
+            android:contentDescription="@string/img_upload"
+            android:visibility="gone"
+            android:background="@color/design_default_color_secondary_variant"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnAddPhotoHembra"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnRegistrarCortejo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_default_padding"
+            android:layout_marginBottom="@dimen/common_default_padding"
+            android:text="@string/añadir_cortejo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imgUploadCortejoHembra"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

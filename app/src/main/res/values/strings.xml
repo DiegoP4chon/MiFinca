@@ -14,7 +14,7 @@
     <string name="btn_terneros">Terneros</string>
     <string name="btnLeche">Leche</string>
     <string name="btn_ventas">Ventas</string>
-    <string name="btn_apareamientos">Apareamientos</string>
+    <string name="btn_cortejos">Cortejos</string>
     <string name="description_btn_exit">Boton cerrar sesión</string>
     <string name="message_welcome">Bienvenido</string>
     <string name="btn_add_ternero">Boton agregar ternero</string>
@@ -71,4 +71,14 @@
     <string name="no_subir_foto">No deseo subir alguna foto</string>
     <string name="modificar_venta">Modificar venta</string>
     <string name="text_cambiar_foto">Presiona si desea cambiar la foto</string>
+    <string name="registros_cortejos">Cortejos</string>
+    <string name="btn_add_cortejo">Boton añadir cortejo</string>
+    <string name="registros_nuevo_cortejo">Nuevo cortejo</string>
+    <string name="hint_macho_cortejo">Caracteristica macho</string>
+    <string name="caracteriticas_macho">Caracteristicas del macho</string>
+    <string name="caracteriticas_hembra">Caracteristicas de la hembra</string>
+    <string name="hint_hembra_cortejo">Caracteristica hembra</string>
+    <string name="añadir_cortejo">Registrar</string>
+    <string name="img_macho">Foto macho cortejos</string>
+    <string name="img_hembra">Foto hembra cortejos</string>
 </resources>

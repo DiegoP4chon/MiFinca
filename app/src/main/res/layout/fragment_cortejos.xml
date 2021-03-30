@@ -4,41 +4,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.ventas.VentasFragment">
+    tools:context=".ui.cortejos.CortejosFragment">
 
     <TextView
-        android:id="@+id/tvTitleVentas"
+        android:id="@+id/tvTitleCortejos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/common_min_padding"
         android:textSize="@dimen/title_fragments"
-        android:text="@string/registros_ventas"
+        android:text="@string/registros_cortejos"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         style="@style/TextAppearance.MaterialComponents.Body1"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvVentas"
+        android:id="@+id/rvCortejos"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
         android:clipToPadding="false"
         android:layout_marginTop="@dimen/common_default_padding"
-        tools:listitem="@layout/item_ventas"
+        tools:listitem="@layout/item_cortejos"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvTitleVentas"
+        app:layout_constraintTop_toBottomOf="@id/tvTitleCortejos"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fbtn_add_venta"
+        android:id="@+id/fbtn_add_cortejo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/common_default_padding"
-        android:contentDescription="@string/btn_add_venta"
-        android:src="@drawable/ic_add_venta"
+        android:contentDescription="@string/btn_add_cortejo"
+        android:src="@drawable/ic_add_cortejo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
