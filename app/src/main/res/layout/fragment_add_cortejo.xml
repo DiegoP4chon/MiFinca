@@ -193,6 +193,16 @@
             app:layout_constraintTop_toBottomOf="@id/imgUploadCortejoHembra"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
 
+        <ProgressBar
+            android:id="@+id/pbCortejo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_default_padding"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imgUploadCortejoHembra"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>

@@ -200,7 +200,7 @@ class TernerosFragment : Fragment(R.layout.fragment_terneros), OnClickListenerTe
                 .setPositiveButton(R.string.btn_delete) { dialogInterface, i ->
                     confirmDeleteTernero(document, idPhoto)
                 }
-                .setNegativeButton(R.string.btn_cancelar_delete_ternero, null)
+                .setNegativeButton(R.string.btn_cancelar_delete, null)
                 .show()
     }
 

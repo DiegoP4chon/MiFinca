@@ -14,4 +14,8 @@ class CortejosRepoImpl(private val dataSource: CortejosDataSource): CortejosRepo
     override suspend fun getListCortejo(collection: String): List<Cortejo> {
         return dataSource.getListCortejo(collection)
     }
+
+    override suspend fun getOneCortejo(collection: String, document: String): List<Cortejo> {
+        return dataSource.getOneCortejo(collection, document)
+    }
 }

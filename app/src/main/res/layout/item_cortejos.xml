@@ -26,7 +26,6 @@
             android:layout_marginTop="@dimen/common_min_padding"
             android:background="@color/design_default_color_secondary_variant"
             android:contentDescription="@string/img_macho"
-            app:layout_constraintEnd_toEndOf="@id/guideline3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvFechaCortejo" />
 
@@ -38,7 +37,6 @@
             android:background="@color/design_default_color_secondary_variant"
             android:contentDescription="@string/img_hembra"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/guideline3"
             app:layout_constraintTop_toBottomOf="@id/tvFechaCortejo" />
 
         <androidx.constraintlayout.widget.Guideline

@@ -68,8 +68,6 @@ class AddVentaFragment : Fragment(R.layout.fragment_add_venta,) {
         }
 
         binding = FragmentAddVentaBinding.bind(view)
-        mStorageReference = FirebaseStorage.getInstance().reference
-
         binding.btnFechaVenta.setOnClickListener { showDatePicker() }
         binding.btnRegistrarVenta.setOnClickListener { validarCampos(binding.tilVenta,
             binding.tilComprador, binding.tilValorVenta) }

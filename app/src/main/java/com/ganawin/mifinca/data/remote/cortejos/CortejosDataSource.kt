@@ -40,4 +40,16 @@ class CortejosDataSource {
         }
         return cortejosList
     }
+
+    suspend fun getOneCortejo(collection: String, document: String): List<Cortejo> {
+        val listCortejo = mutableListOf<Cortejo>()
+        val querySnapshot = firebaseFirestore.collection(collection)
+                .whereEqualTo("document", document).get().await()
+        for (cortejo in querySnapshot.documents){
+            cortejo.toObject(Cortejo::class.java)?.let { fbCortejo ->
+                listCortejo.add(fbCortejo)
+            }
+        }
+        return listCortejo
+    }
 }

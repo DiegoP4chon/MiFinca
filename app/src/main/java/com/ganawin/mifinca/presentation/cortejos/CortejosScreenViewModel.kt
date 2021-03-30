@@ -25,6 +25,15 @@ class CortejosScreenViewModel(private val repo: CortejosRepo): ViewModel() {
             emit(Resource.Failure(e))
         }
     }
+
+    fun getOneCortejo(collection: String, document: String) = liveData {
+        emit(Resource.Loading())
+        try {
+            emit(Resource.Success(repo.getOneCortejo(collection, document)))
+        } catch (e: Exception){
+            emit(Resource.Failure(e))
+        }
+    }
 }
 class CortejosScreenViewModelFactory(private val repo: CortejosRepo): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

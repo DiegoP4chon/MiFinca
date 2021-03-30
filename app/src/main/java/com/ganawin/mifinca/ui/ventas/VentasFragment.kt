@@ -58,7 +58,7 @@ class VentasFragment : Fragment(R.layout.fragment_ventas), OnClickListenerVentas
                 .setPositiveButton(R.string.btn_update) { dialogInterface, i ->
                     updateRegistroVenta(document)
                 }
-                .setNegativeButton(R.string.btn_cancelar_delete_ternero, null)
+                .setNegativeButton(R.string.btn_cancelar_delete, null)
                 .show()
     }
 

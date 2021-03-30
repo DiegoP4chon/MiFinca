@@ -24,7 +24,7 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         android:clipToPadding="false"
-        android:layout_marginTop="@dimen/common_default_padding"
+        android:layout_marginTop="@dimen/common_min_padding"
         tools:listitem="@layout/item_cortejos"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

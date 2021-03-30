@@ -196,7 +196,7 @@ class LecheFragment : Fragment(R.layout.fragment_leche), OnClickListenerLeche {
                 .setPositiveButton(R.string.btn_update) { dialogInterface, i ->
                     updateRegistroLeche(document, itemLeche)
                 }
-                .setNegativeButton(R.string.btn_cancelar_delete_ternero, null)
+                .setNegativeButton(R.string.btn_cancelar_delete, null)
                 .show()
     }
 
