@@ -9,7 +9,8 @@ import com.ganawin.mifinca.core.BaseViewHolder
 import com.ganawin.mifinca.data.model.Venta
 import com.ganawin.mifinca.databinding.ItemVentasBinding
 
-class VentasSreenAdapter(private val ventasList: List<Venta>): RecyclerView.Adapter<BaseViewHolder<*>>() {
+class VentasSreenAdapter(private val ventasList: List<Venta>,
+                         private var listener: OnClickListenerVentas): RecyclerView.Adapter<BaseViewHolder<*>>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
         val itemBinding = ItemVentasBinding.inflate(LayoutInflater.from(parent.context), parent,
             false)
@@ -37,6 +38,8 @@ class VentasSreenAdapter(private val ventasList: List<Venta>): RecyclerView.Adap
                 .load(item.url_Photo)
                 .centerCrop()
                 .into(binding.imgVenta)
+
+            binding.root.setOnClickListener { listener.onCLickItemVenta(item.document) }
         }
     }
 

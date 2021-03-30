@@ -69,4 +69,6 @@
     <string name="hint_valor">Precio de venta</string>
     <string name="pregunta_subir_foto">Presione si desea subir una foto</string>
     <string name="no_subir_foto">No deseo subir alguna foto</string>
+    <string name="modificar_venta">Modificar venta</string>
+    <string name="text_cambiar_foto">Presiona si desea cambiar la foto</string>
 </resources>

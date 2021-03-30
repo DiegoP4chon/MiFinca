@@ -7,12 +7,16 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
 import com.ganawin.mifinca.R
+import com.ganawin.mifinca.core.GenerateId
 import com.ganawin.mifinca.core.Resource
+import com.ganawin.mifinca.data.model.Venta
 import com.ganawin.mifinca.data.remote.ventas.VentasDataSource
 import com.ganawin.mifinca.databinding.FragmentAddVentaBinding
 import com.ganawin.mifinca.domain.ventas.VentasRepoImpl
@@ -22,6 +26,8 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class AddVentaFragment : Fragment(R.layout.fragment_add_venta,) {
 
@@ -29,8 +35,11 @@ class AddVentaFragment : Fragment(R.layout.fragment_add_venta,) {
     private lateinit var calendar: Calendar
     private lateinit var mStorageReference: StorageReference
     private var UserUid: String = ""
+    private var document = ""
     private var urlPhoto = ""
     private var idPhoto = ""
+
+    private var mapVenta: HashMap<String, Any> = hashMapOf()
 
     private var year = 0
     private var month = 0
@@ -46,12 +55,17 @@ class AddVentaFragment : Fragment(R.layout.fragment_add_venta,) {
         super.onCreate(savedInstanceState)
         arguments?.let { bundle ->
             UserUid = bundle.getString("UID", "")
-
+            document = bundle.getString("document", "")
+            Log.d("isModificando", document)
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if(document != ""){
+            cargarFormulario(document)
+        }
 
         binding = FragmentAddVentaBinding.bind(view)
         mStorageReference = FirebaseStorage.getInstance().reference
@@ -60,6 +74,39 @@ class AddVentaFragment : Fragment(R.layout.fragment_add_venta,) {
         binding.btnRegistrarVenta.setOnClickListener { validarCampos(binding.tilVenta,
             binding.tilComprador, binding.tilValorVenta) }
         binding.tvSubirFoto.setOnClickListener { openGallery() }
+    }
+
+    private fun cargarFormulario(document: String) {
+        viewModel.getOneVenta(UserUid, document).observe(viewLifecycleOwner, { result->
+            when(result){
+                is Resource.Loading -> {
+                }
+                is Resource.Success -> {
+                    llenarCampos(result.data)
+                }
+                is Resource.Failure -> {
+                    Toast.makeText(requireContext(), "Error: ${result.exception}", Toast.LENGTH_SHORT)
+                            .show()
+                }
+            }
+        })
+    }
+
+    private fun llenarCampos(data: List<Venta>) {
+        idPhoto = data[0].idPhoto
+        binding.tvTitleAnadirVenta.text = getString(R.string.modificar_venta)
+        binding.btnFechaVenta.text = data[0].fecha_venta
+        binding.etVenta.setText(data[0].descripVenta)
+        binding.etComprador.setText(data[0].comprador)
+        binding.etValorVenta.setText(data[0].valorVenta.toString())
+        binding.tvSubirFoto.text = getString(R.string.text_cambiar_foto)
+        binding.imgUploadVenta.visibility = View.VISIBLE
+        binding.btnRegistrarVenta.text = getString(R.string.btn_update)
+
+        Glide.with(requireContext())
+                .load(data[0].url_Photo)
+                .centerCrop()
+                .into(binding.imgUploadVenta)
     }
 
     private fun validarCampos(vararg textFields: TextInputLayout) {
@@ -77,8 +124,35 @@ class AddVentaFragment : Fragment(R.layout.fragment_add_venta,) {
         if(binding.btnFechaVenta.text.toString() == "Seleccionar"){
             Toast.makeText(requireContext(), "Selecciona la fecha", Toast.LENGTH_SHORT).show()
         } else {
-            insertarVenta()
+            if(document != "") {
+                ModificarVenta()
+            } else {
+                insertarVenta()
+            }
         }
+    }
+
+    private fun ModificarVenta() {
+        mapVenta["id"] = GenerateId().generateID(binding.btnFechaVenta.text.toString())
+        mapVenta["descripVenta"] = binding.etVenta.text.toString().trim()
+        mapVenta["fecha_venta"] = binding.btnFechaVenta.text.toString()
+        mapVenta["comprador"] = binding.etComprador.text.toString().trim()
+        mapVenta["valorVenta"] = binding.etValorVenta.text.toString().trim().toLong()
+
+        viewModel.updateVenta(UserUid, document, mapVenta).observe(viewLifecycleOwner, { result->
+            when(result){
+                is Resource.Loading -> {
+                }
+                is Resource.Success -> {
+                    Toast.makeText(requireContext(), "$result.data", Toast.LENGTH_LONG).show()
+                    activity?.onBackPressed()
+                }
+                is Resource.Failure -> {
+                    Toast.makeText(requireContext(), "Error: ${result.exception}", Toast.LENGTH_SHORT)
+                            .show()
+                }
+            }
+        })
     }
 
     private fun insertarVenta() {
@@ -145,8 +219,16 @@ class AddVentaFragment : Fragment(R.layout.fragment_add_venta,) {
     private fun uploadPhoto(imageSelectedUri: Uri) {
         mStorageReference = FirebaseStorage.getInstance().reference
 
-        val storageReference = mStorageReference.child("FotosVentas")
-            .child(UserUid).child("${UUID.randomUUID()}")
+        val storageReference: StorageReference = if(document != ""){
+            if(idPhoto == ""){
+                idPhoto = "${UUID.randomUUID()}"
+            }
+            mStorageReference.child("FotosVentas")
+                    .child(UserUid).child(idPhoto)
+        }else{
+            mStorageReference.child("FotosVentas")
+                    .child(UserUid).child("${UUID.randomUUID()}")
+        }
         imageSelectedUri.let {
             storageReference.putFile(imageSelectedUri)
                 .addOnProgressListener {
@@ -161,8 +243,10 @@ class AddVentaFragment : Fragment(R.layout.fragment_add_venta,) {
                     Toast.makeText(requireContext(), "Foto sudida", Toast.LENGTH_SHORT).show()
                     it.storage.downloadUrl.addOnSuccessListener {
                         urlPhoto = it.toString()
+                        mapVenta["url_Photo"] = it.toString()
                     }
                     idPhoto = it.storage.name
+                    mapVenta["idPhoto"] = it.storage.name
                 }
                 .addOnFailureListener{
                     Toast.makeText(requireContext(), "Error al subir la foto", Toast.LENGTH_SHORT)

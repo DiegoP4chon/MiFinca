@@ -15,9 +15,11 @@ import com.ganawin.mifinca.databinding.FragmentVentasBinding
 import com.ganawin.mifinca.domain.ventas.VentasRepoImpl
 import com.ganawin.mifinca.presentation.ventas.VentasScreenViewModel
 import com.ganawin.mifinca.presentation.ventas.VentasScreenViewModelFactory
+import com.ganawin.mifinca.ui.ventas.adapter.OnClickListenerVentas
 import com.ganawin.mifinca.ui.ventas.adapter.VentasSreenAdapter
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-class VentasFragment : Fragment(R.layout.fragment_ventas) {
+class VentasFragment : Fragment(R.layout.fragment_ventas), OnClickListenerVentas {
 
     private lateinit var binding: FragmentVentasBinding
     private lateinit var userUIDColecction: String
@@ -40,7 +42,7 @@ class VentasFragment : Fragment(R.layout.fragment_ventas) {
             when(result){
                 is Resource.Loading -> {}
                 is Resource.Success -> {
-                    binding.rvVentas.adapter = VentasSreenAdapter(result.data)
+                    binding.rvVentas.adapter = VentasSreenAdapter(result.data, this)
                     Log.d("datosVentas", "data: ${result.data}")
                 }
                 is Resource.Failure -> {
@@ -48,6 +50,22 @@ class VentasFragment : Fragment(R.layout.fragment_ventas) {
                 }
             }
         })
+    }
+
+    override fun onCLickItemVenta(document: String) {
+        MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.dialog_update)
+                .setPositiveButton(R.string.btn_update) { dialogInterface, i ->
+                    updateRegistroVenta(document)
+                }
+                .setNegativeButton(R.string.btn_cancelar_delete_ternero, null)
+                .show()
+    }
+
+    private fun updateRegistroVenta(document: String) {
+        findNavController().navigate(R.id.action_ventasFragment_to_addVentaFragment,
+                bundleOf("document" to document , "UID" to userUIDColecction)
+        )
     }
 
     private fun screenAddVenta() {

@@ -11,7 +11,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/tvTitleAñadirVenta"
+            android:id="@+id/tvTitleAnadirVenta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/common_min_padding"
@@ -30,7 +30,7 @@
             android:layout_marginTop="@dimen/common_48_padding"
             android:layout_marginStart="@dimen/common_default_padding"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvTitleAñadirVenta"/>
+            app:layout_constraintTop_toBottomOf="@id/tvTitleAnadirVenta"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnFechaVenta"

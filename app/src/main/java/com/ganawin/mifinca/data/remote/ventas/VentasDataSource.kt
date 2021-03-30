@@ -40,4 +40,27 @@ class VentasDataSource {
         }
         return ventaList
     }
+
+    suspend fun getOneVenta(collection: String, document: String): List<Venta> {
+        val ventaList = mutableListOf<Venta>()
+        val querySnapshot = firebaseFirestore.collection(collection)
+                .whereEqualTo("document", document).get().await()
+        for (venta in querySnapshot.documents){
+            venta.toObject(Venta::class.java)?.let { fbVenta ->
+                ventaList.add(fbVenta)
+            }
+        }
+        return ventaList
+    }
+
+    suspend fun updateVenta(collection: String, document: String, map: HashMap<String, Any>): Resource<String>{
+        firebaseFirestore.collection(collection).document(document).update(map)
+                .addOnSuccessListener {
+                    result = "Registro modificado"
+                }
+                .addOnFailureListener {
+                    result = it.toString()
+                }.await()
+        return Resource.Success(result)
+    }
 }

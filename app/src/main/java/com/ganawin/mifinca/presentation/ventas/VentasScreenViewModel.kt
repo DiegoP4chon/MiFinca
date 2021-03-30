@@ -7,6 +7,7 @@ import com.ganawin.mifinca.core.Resource
 import com.ganawin.mifinca.domain.terneros.TerneroRepo
 import com.ganawin.mifinca.domain.ventas.VentasRepo
 import com.ganawin.mifinca.presentation.ternero.TerneroScreenViewModel
+import java.util.HashMap
 
 class VentasScreenViewModel(private val repo: VentasRepo): ViewModel() {
 
@@ -27,6 +28,23 @@ class VentasScreenViewModel(private val repo: VentasRepo): ViewModel() {
            emit(Resource.Failure(e))
        }
    }
+    fun getOneVenta(collection: String, document: String) = liveData {
+        emit(Resource.Loading())
+        try {
+            emit(Resource.Success(repo.getOneVenta(collection, document)))
+        } catch (e: Exception){
+            emit(Resource.Failure(e))
+        }
+    }
+
+    fun updateVenta(collection: String, document: String, map: HashMap<String, Any>) = liveData {
+        emit(Resource.Loading())
+        try {
+            emit(Resource.Success(repo.updateVenta(collection, document, map)))
+        } catch (e: Exception){
+            emit(Resource.Failure(e))
+        }
+    }
 }
 class VentasScreenViewModelFactory(private val repo: VentasRepo): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
