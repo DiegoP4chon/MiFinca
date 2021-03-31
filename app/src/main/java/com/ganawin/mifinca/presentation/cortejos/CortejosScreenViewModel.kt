@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
 import com.ganawin.mifinca.core.Resource
 import com.ganawin.mifinca.domain.cortejos.CortejosRepo
+import java.util.HashMap
 
 class CortejosScreenViewModel(private val repo: CortejosRepo): ViewModel() {
 
@@ -30,6 +31,24 @@ class CortejosScreenViewModel(private val repo: CortejosRepo): ViewModel() {
         emit(Resource.Loading())
         try {
             emit(Resource.Success(repo.getOneCortejo(collection, document)))
+        } catch (e: Exception){
+            emit(Resource.Failure(e))
+        }
+    }
+
+    fun updateCortejo(collection: String, document: String, map: HashMap<String, Any>) = liveData {
+        emit(Resource.Loading())
+        try {
+            emit(Resource.Success(repo.updateCortejo(collection, document, map)))
+        } catch (e: Exception){
+            emit(Resource.Failure(e))
+        }
+    }
+
+    fun deleteCortejo(collection: String, document: String) = liveData {
+        emit(Resource.Loading())
+        try {
+            emit(Resource.Success(repo.deleteCortejo(collection, document)))
         } catch (e: Exception){
             emit(Resource.Failure(e))
         }

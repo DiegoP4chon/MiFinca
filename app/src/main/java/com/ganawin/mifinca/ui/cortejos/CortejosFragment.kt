@@ -1,6 +1,7 @@
 package com.ganawin.mifinca.ui.cortejos
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
@@ -18,11 +19,15 @@ import com.ganawin.mifinca.presentation.cortejos.CortejosScreenViewModelFactory
 import com.ganawin.mifinca.ui.cortejos.adapter.CortejosScreenAdapter
 import com.ganawin.mifinca.ui.cortejos.adapter.OnClickListenerCortejo
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import kotlin.math.log
 
 class CortejosFragment : Fragment(R.layout.fragment_cortejos), OnClickListenerCortejo {
 
     private lateinit var binding: FragmentCortejosBinding
     private lateinit var userUIDColecction: String
+    private lateinit var mStorageReference: StorageReference
 
     private val viewModel by viewModels<CortejosScreenViewModel> { CortejosScreenViewModelFactory(
             CortejosRepoImpl(CortejosDataSource())
@@ -53,14 +58,56 @@ class CortejosFragment : Fragment(R.layout.fragment_cortejos), OnClickListenerCo
         })
     }
 
-    override fun onClickItemCortejo(document: String) {
+    override fun onClickItemCortejo(document: String, listIdPhotos: MutableList<String>) {
+        val items = resources.getStringArray(R.array.array_options_item)
+
         MaterialAlertDialogBuilder(requireContext())
-                .setTitle(R.string.dialog_update)
-                .setPositiveButton(R.string.btn_update) { dialogInterface, i ->
-                    updateCortejo(document)
+                .setTitle(getString(R.string.dialog_OnLongClick))
+                .setItems(items) { dialogInterface, i ->
+                    when(i){
+                        0 -> deleteCortejo(document, listIdPhotos)
+                        1 -> updateCortejo(document)
+                    }
+                }.show()
+    }
+
+    private fun deleteCortejo(document: String, listIdPhotos: MutableList<String>) {
+        MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.confirm_delete)
+                .setPositiveButton(R.string.btn_delete) { dialogInterface, i ->
+                    confirmDeleteCortejo(document, listIdPhotos)
                 }
                 .setNegativeButton(R.string.btn_cancelar_delete, null)
                 .show()
+    }
+
+    private fun confirmDeleteCortejo(document: String, listIdPhotos: MutableList<String>) {
+        viewModel.deleteCortejo(userUIDColecction, document).observe(viewLifecycleOwner, { result ->
+            when(result){
+                is Resource.Loading -> {}
+                is Resource.Success -> {
+                    Toast.makeText(requireContext(), result.data.toString(), Toast.LENGTH_SHORT)
+                            .show()
+                    deletePhotos(listIdPhotos)
+                    getListCortejos()
+                }
+                is Resource.Failure -> {
+                    Toast.makeText(requireContext(), "ha ocurrido un error", Toast.LENGTH_SHORT)
+                            .show()
+                }
+            }
+        })
+    }
+
+    private fun deletePhotos(listIdPhotos: MutableList<String>) {
+        mStorageReference = FirebaseStorage.getInstance().reference
+        for (idPhoto in listIdPhotos){
+            if(idPhoto != ""){
+                val storageReference = mStorageReference.child("FotosCortejos")
+                        .child(userUIDColecction).child(idPhoto)
+                storageReference.delete()
+            }
+        }
     }
 
     private fun updateCortejo(document: String) {

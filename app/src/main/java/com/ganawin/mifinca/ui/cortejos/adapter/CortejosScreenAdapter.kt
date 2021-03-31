@@ -45,7 +45,9 @@ class CortejosScreenAdapter(private val listCortejos: List<Cortejo>,
                     .centerCrop()
                     .into(binding.imgHembraCortejo)
 
-            binding.root.setOnClickListener { listener.onClickItemCortejo(item.document) }
+            val listIdPhotos = mutableListOf(item.idPhoto_macho, item.idPhoto_hembra)
+
+            binding.root.setOnClickListener { listener.onClickItemCortejo(item.document, listIdPhotos) }
         }
     }
 }

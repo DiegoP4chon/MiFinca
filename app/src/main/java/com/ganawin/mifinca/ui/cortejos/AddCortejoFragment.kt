@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.ganawin.mifinca.R
+import com.ganawin.mifinca.core.GenerateId
 import com.ganawin.mifinca.core.Resource
 import com.ganawin.mifinca.data.model.Cortejo
 import com.ganawin.mifinca.data.remote.cortejos.CortejosDataSource
@@ -25,6 +26,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.util.*
+import kotlin.collections.HashMap
 
 class AddCortejoFragment : Fragment(R.layout.fragment_add_cortejo) {
 
@@ -36,6 +38,8 @@ class AddCortejoFragment : Fragment(R.layout.fragment_add_cortejo) {
     private var urlPhotoMacho = ""
     private var idPhotoHembra = ""
     private var urlPhotoHembra = ""
+
+    private var mapCortejo: HashMap<String, Any> = hashMapOf()
 
     private lateinit var calendar: Calendar
     private var year = 0
@@ -92,6 +96,8 @@ class AddCortejoFragment : Fragment(R.layout.fragment_add_cortejo) {
     }
 
     private fun llenarCampos(data: List<Cortejo>) {
+        idPhotoMacho = data[0].idPhoto_macho
+        idPhotoHembra = data[0].idPhoto_hembra
         binding.tvTitleAnadirCortejo.text = getString(R.string.modificar_cortejo)
         binding.btnFechaCortejo.text = data[0].fecha_cortejo
         binding.etMachoCortejo.setText(data[0].caract_macho)
@@ -129,11 +135,35 @@ class AddCortejoFragment : Fragment(R.layout.fragment_add_cortejo) {
             Toast.makeText(requireContext(), "Selecciona la fecha", Toast.LENGTH_SHORT).show()
         } else {
             if(document != ""){
-                Toast.makeText(requireContext(), "Modificando", Toast.LENGTH_SHORT).show()
+                modificarRegistro()
             } else {
                 insertarRegistro()
             }
         }
+    }
+
+    private fun modificarRegistro() {
+        mapCortejo["id"] = GenerateId().generateID(binding.btnFechaCortejo.text.toString())
+        mapCortejo["fecha_cortejo"] = binding.btnFechaCortejo.text.toString()
+        mapCortejo["caract_macho"] = binding.etMachoCortejo.text.toString().trim()
+        mapCortejo["raza_macho"] = binding.etMachoRaza.text.toString().trim()
+        mapCortejo["caract_hembra"] = binding.etHembraCortejo.text.toString().trim()
+        mapCortejo["raza_hembra"] = binding.etHembraRaza.text.toString().trim()
+
+        viewModel.updateCortejo(UserUid, document, mapCortejo).observe(viewLifecycleOwner, { result->
+            when(result){
+                is Resource.Loading -> {
+                }
+                is Resource.Success -> {
+                    Toast.makeText(requireContext(), "$result.data", Toast.LENGTH_LONG).show()
+                    activity?.onBackPressed()
+                }
+                is Resource.Failure -> {
+                    Toast.makeText(requireContext(), "Error: ${result.exception}", Toast.LENGTH_SHORT)
+                            .show()
+                }
+            }
+        })
     }
 
     private fun insertarRegistro() {
@@ -190,8 +220,29 @@ class AddCortejoFragment : Fragment(R.layout.fragment_add_cortejo) {
 
     private fun uploadPhoto(imageSelectedUri: Uri, identificador: Int) {
         mStorageReference = FirebaseStorage.getInstance().reference
-        val storageReference: StorageReference = mStorageReference.child("FotosCortejos")
-                .child(UserUid).child("${UUID.randomUUID()}")
+
+        val storageReference: StorageReference = if(document != ""){
+            var idPhotoUpload = ""
+            idPhotoUpload = if(identificador < 0){
+                if(idPhotoMacho == ""){
+                    "${UUID.randomUUID()}"
+                } else {
+                    idPhotoMacho
+                }
+            } else {
+                if(idPhotoHembra == ""){
+                    "${UUID.randomUUID()}"
+                } else {
+                    idPhotoHembra
+                }
+            }
+            mStorageReference.child("FotosCortejos")
+                    .child(UserUid).child(idPhotoUpload)
+
+        }else{
+            mStorageReference.child("FotosCortejos")
+                    .child(UserUid).child("${UUID.randomUUID()}")
+        }
         imageSelectedUri.let {
             storageReference.putFile(imageSelectedUri)
                     .addOnProgressListener {
@@ -207,14 +258,18 @@ class AddCortejoFragment : Fragment(R.layout.fragment_add_cortejo) {
                         it.storage.downloadUrl.addOnSuccessListener {
                             if(identificador < 0){
                                 urlPhotoMacho = it.toString()
+                                mapCortejo["urlPhoto_macho"] = it.toString()
                             } else {
                                 urlPhotoHembra = it.toString()
+                                mapCortejo["urlPhoto_hembra"] = it.toString()
                             }
                         }
                         if(identificador < 0){
                             idPhotoMacho = it.storage.name
+                            mapCortejo["idPhoto_macho"] = it.storage.name
                         } else {
                             idPhotoHembra = it.storage.name
+                            mapCortejo["idPhoto_hembra"] = it.storage.name
                         }
                     }
                     .addOnFailureListener{
