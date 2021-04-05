@@ -39,7 +39,6 @@ class TernerosFragment : Fragment(R.layout.fragment_terneros), OnClickListenerTe
 
         userUid()
         binding = FragmentTernerosBinding.bind(view)
-        mStorageReference = FirebaseStorage.getInstance().reference
         binding.fbtnAddTernero.setOnClickListener { addTerneroFragment() }
         showTerneros()
     }
@@ -109,7 +108,7 @@ class TernerosFragment : Fragment(R.layout.fragment_terneros), OnClickListenerTe
     }
 
     private fun deletePhoto(idPhoto: String) {
-
+        mStorageReference = FirebaseStorage.getInstance().reference
         if(idPhoto != ""){
             val storageReference = mStorageReference.child("FotosTerneros")
                     .child(userUIDColecction).child(idPhoto)

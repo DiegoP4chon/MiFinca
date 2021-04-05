@@ -21,4 +21,8 @@ class VentasRepoImpl(private val dataSource: VentasDataSource): VentasRepo {
     override suspend fun updateVenta(collection: String, document: String, map: HashMap<String, Any>): Resource<String> {
         return dataSource.updateVenta(collection, document, map)
     }
+
+    override suspend fun deleteVenta(collection: String, document: String): Resource<String> {
+        return dataSource.deleteVenta(collection, document)
+    }
 }

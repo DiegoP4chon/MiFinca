@@ -9,4 +9,5 @@ interface VentasRepo {
     suspend fun getListVentas(collection: String): List<Venta>
     suspend fun getOneVenta(collection: String, document: String): List<Venta>
     suspend fun updateVenta(collection: String, document: String, map: HashMap<String, Any>): Resource<String>
+    suspend fun deleteVenta(collection: String, document: String): Resource<String>
 }

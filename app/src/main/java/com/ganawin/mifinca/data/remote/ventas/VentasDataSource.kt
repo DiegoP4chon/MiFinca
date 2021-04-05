@@ -63,4 +63,16 @@ class VentasDataSource {
                 }.await()
         return Resource.Success(result)
     }
+
+    suspend fun deleteVenta(collection: String, document: String): Resource<String> {
+        firebaseFirestore.collection(collection).document(document)
+                .delete()
+                .addOnSuccessListener {
+                    result = "Registro eliminado"
+                }
+                .addOnFailureListener {
+                    result = it.toString()
+                }.await()
+        return Resource.Success(result)
+    }
 }

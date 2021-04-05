@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -18,11 +19,14 @@ import com.ganawin.mifinca.presentation.ventas.VentasScreenViewModelFactory
 import com.ganawin.mifinca.ui.ventas.adapter.OnClickListenerVentas
 import com.ganawin.mifinca.ui.ventas.adapter.VentasSreenAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 
 class VentasFragment : Fragment(R.layout.fragment_ventas), OnClickListenerVentas {
 
     private lateinit var binding: FragmentVentasBinding
     private lateinit var userUIDColecction: String
+    private lateinit var mStorageReference: StorageReference
 
     private val viewModel by viewModels<VentasScreenViewModel> { VentasScreenViewModelFactory(
         VentasRepoImpl(VentasDataSource())
@@ -43,7 +47,6 @@ class VentasFragment : Fragment(R.layout.fragment_ventas), OnClickListenerVentas
                 is Resource.Loading -> {}
                 is Resource.Success -> {
                     binding.rvVentas.adapter = VentasSreenAdapter(result.data, this)
-                    Log.d("datosVentas", "data: ${result.data}")
                 }
                 is Resource.Failure -> {
                     Log.d("datosVentas", "Error ${result.exception}")
@@ -52,14 +55,54 @@ class VentasFragment : Fragment(R.layout.fragment_ventas), OnClickListenerVentas
         })
     }
 
-    override fun onCLickItemVenta(document: String) {
+    override fun onCLickItemVenta(document: String, idPhoto: String) {
+        val items = resources.getStringArray(R.array.array_options_item)
+
         MaterialAlertDialogBuilder(requireContext())
-                .setTitle(R.string.dialog_update)
-                .setPositiveButton(R.string.btn_update) { dialogInterface, i ->
-                    updateRegistroVenta(document)
+                .setTitle(getString(R.string.dialog_OnLongClick))
+                .setItems(items) { dialogInterface, i ->
+                    when(i){
+                        0 -> deleteVenta(document, idPhoto)
+                        1 -> updateRegistroVenta(document)
+                    }
+                }.show()
+    }
+
+    private fun deleteVenta(document: String, idPhoto: String) {
+        MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.confirm_delete)
+                .setPositiveButton(R.string.btn_delete) { dialogInterface, i ->
+                    confirmDeleteVenta(document, idPhoto)
                 }
                 .setNegativeButton(R.string.btn_cancelar_delete, null)
                 .show()
+    }
+
+    private fun confirmDeleteVenta(document: String, idPhoto: String) {
+        viewModel.deleteVenta(userUIDColecction, document).observe(viewLifecycleOwner, { result ->
+            when(result){
+                is Resource.Loading -> {}
+                is Resource.Success -> {
+                    Toast.makeText(requireContext(), result.data.toString(), Toast.LENGTH_SHORT)
+                            .show()
+                    deletePhoto(idPhoto)
+                    getListVentas()
+                }
+                is Resource.Failure -> {
+                    Toast.makeText(requireContext(), "ha ocurrido un error", Toast.LENGTH_SHORT)
+                            .show()
+                }
+            }
+        })
+    }
+
+    private fun deletePhoto(idPhoto: String) {
+        mStorageReference = FirebaseStorage.getInstance().reference
+        if(idPhoto != ""){
+            val storageReference = mStorageReference.child("FotosVentas")
+                    .child(userUIDColecction).child(idPhoto)
+            storageReference.delete()
+        }
     }
 
     private fun updateRegistroVenta(document: String) {

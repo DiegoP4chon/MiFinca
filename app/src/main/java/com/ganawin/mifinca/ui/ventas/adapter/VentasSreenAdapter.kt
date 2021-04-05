@@ -39,7 +39,7 @@ class VentasSreenAdapter(private val ventasList: List<Venta>,
                 .centerCrop()
                 .into(binding.imgVenta)
 
-            binding.root.setOnClickListener { listener.onCLickItemVenta(item.document) }
+            binding.root.setOnClickListener { listener.onCLickItemVenta(item.document, item.idPhoto) }
         }
     }
 

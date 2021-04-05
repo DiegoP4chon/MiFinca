@@ -43,6 +43,15 @@ class VentasScreenViewModel(private val repo: VentasRepo): ViewModel() {
             emit(Resource.Failure(e))
         }
     }
+
+    fun deleteVenta(collection: String, document: String) = liveData {
+        emit(Resource.Loading())
+        try {
+            emit(Resource.Success(repo.deleteVenta(collection, document)))
+        } catch (e: Exception){
+            emit(Resource.Failure(e))
+        }
+    }
 }
 class VentasScreenViewModelFactory(private val repo: VentasRepo): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
