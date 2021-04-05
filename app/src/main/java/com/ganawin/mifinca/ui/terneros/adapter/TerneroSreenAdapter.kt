@@ -43,14 +43,7 @@ class TerneroSreenAdapter(private val ternerosList: List<Ternero>, private var l
                 .centerCrop()
                 .into(binding.imgFotoTernero)
 
-            val itemTernero = mutableListOf<String>()
-                itemTernero.add(item.date_nacimiento)
-                itemTernero.add(item.sexo)
-                itemTernero.add(item.madre)
-                itemTernero.add(item.padre)
-                itemTernero.add(item.raza)
-                itemTernero.add(item.idPhoto)
-            binding.root.setOnClickListener { listenerTernero.onLongClick(item.document, itemTernero)}
+            binding.root.setOnClickListener { listenerTernero.onLongClick(item.document, item.idPhoto)}
         }
     }
 }

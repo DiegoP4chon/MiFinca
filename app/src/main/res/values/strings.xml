@@ -82,4 +82,5 @@
     <string name="img_macho">Foto macho cortejos</string>
     <string name="img_hembra">Foto hembra cortejos</string>
     <string name="modificar_cortejo">Modificar datos</string>
+    <string name="modificar_ternero">Modificar</string>
 </resources>

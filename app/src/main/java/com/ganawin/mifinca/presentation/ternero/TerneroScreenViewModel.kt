@@ -29,6 +29,15 @@ class TerneroScreenViewModel(private val repo: TerneroRepo): ViewModel() {
         }
     }
 
+    fun fetchOneTernero(collection: String, document: String) = liveData(Dispatchers.IO) {
+        emit(Resource.Loading())
+        try {
+            emit(repo.getOneTernero(collection, document))
+        } catch (e: Exception){
+            emit(Resource.Failure(e))
+        }
+    }
+
     fun deleteItemTernero(collection: String, document: String) = liveData(Dispatchers.IO){
         emit(Resource.Loading())
         try{

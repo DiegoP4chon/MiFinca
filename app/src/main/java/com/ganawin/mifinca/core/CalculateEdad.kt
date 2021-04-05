@@ -14,9 +14,9 @@ class CalculateEdad {
         val minutos = segundos/60
         val horas = minutos/60
         val dias = horas/24
-        val años:Double = dias/365.0
-        val meses = (años % 1) * 12
-        return "Edad: ${años.toInt()} años y ${meses.toInt()} meses"
+        val anios:Double = dias/365.0
+        val meses = (anios % 1) * 12
+        return "Edad: ${anios.toInt()} años y ${meses.toInt()} meses"
 
     }
 

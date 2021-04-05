@@ -40,6 +40,18 @@ class TernerosDataSource {
         return Resource.Success(ternerosList)
     }
 
+    suspend fun getOneTernero(collection: String, document: String): Resource<List<Ternero>> {
+        val listTernero = mutableListOf<Ternero>()
+        val querySnapshot = firebaseFirestore.collection(collection)
+                .whereEqualTo("document", document).get().await()
+        for (ternero in querySnapshot.documents) {
+            ternero.toObject(Ternero::class.java)?.let { fbTernero ->
+                listTernero.add(fbTernero)
+            }
+        }
+        return Resource.Success(listTernero)
+    }
+
     suspend fun deleteTernero(collection: String, document: String): Resource<String> {
         firebaseFirestore.collection(collection).document(document)
                 .delete()

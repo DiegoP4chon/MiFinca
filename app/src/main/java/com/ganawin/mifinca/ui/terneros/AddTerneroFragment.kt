@@ -14,8 +14,11 @@ import android.widget.CalendarView
 import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
 import com.ganawin.mifinca.R
+import com.ganawin.mifinca.core.GenerateId
 import com.ganawin.mifinca.core.Resource
+import com.ganawin.mifinca.data.model.Ternero
 import com.ganawin.mifinca.data.remote.terneros.TernerosDataSource
 import com.ganawin.mifinca.databinding.FragmentAddTerneroBinding
 import com.ganawin.mifinca.domain.terneros.TerneroRepoImpl
@@ -27,6 +30,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.io.ByteArrayOutputStream
 import java.util.*
+import kotlin.collections.HashMap
 
 
 class AddTerneroFragment : Fragment(R.layout.fragment_add_ternero) {
@@ -39,6 +43,8 @@ class AddTerneroFragment : Fragment(R.layout.fragment_add_ternero) {
     private var UserUid: String = ""
     private var URL: String = ""
     private var idPhoto: String = ""
+    private var document: String = ""
+    private var mapTernero: HashMap<String, Any> = hashMapOf()
 
     private lateinit var mStorageReference: StorageReference
 
@@ -50,7 +56,7 @@ class AddTerneroFragment : Fragment(R.layout.fragment_add_ternero) {
         super.onCreate(savedInstanceState)
         arguments?.let { bundle ->
             UserUid = bundle.getString("UID", "")
-
+            document = bundle.getString("document", "")
         }
     }
 
@@ -58,7 +64,10 @@ class AddTerneroFragment : Fragment(R.layout.fragment_add_ternero) {
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentAddTerneroBinding.bind(view)
-        mStorageReference = FirebaseStorage.getInstance().reference
+
+        if(document != ""){
+            cargarFormulario(document)
+        }
 
         binding.btnNewTernero.setOnClickListener { addNewTernero(binding.tilMadre,
             binding.tilPadre, binding.tilRaza) }
@@ -69,12 +78,50 @@ class AddTerneroFragment : Fragment(R.layout.fragment_add_ternero) {
 
 
         val calendar = binding.calendarNacimiento
-        calendar.setOnDateChangeListener(CalendarView.OnDateChangeListener { view, year, month, dayOfMonth ->
-            fecha = "$dayOfMonth/${month+1}/$year"
+        calendar.setOnDateChangeListener { view, year, month, dayOfMonth ->
+            fecha = "$dayOfMonth/${month + 1}/$year"
             Toast.makeText(requireContext(), fecha, Toast.LENGTH_LONG).show()
-            binding.tvSelectDate.text = "Fecha seleccionada: $fecha"
+            binding.tvSelectDate.text = fecha
 
+        }
+    }
+
+    private fun cargarFormulario(document: String) {
+        viewModel.fetchOneTernero(UserUid, document).observe(viewLifecycleOwner, { result->
+            when(result){
+                is Resource.Loading -> {
+                }
+                is Resource.Success -> {
+                    llenarCampos(result.data)
+                }
+                is Resource.Failure -> {
+                    Toast.makeText(requireContext(), "Error: ${result.exception}", Toast.LENGTH_SHORT)
+                            .show()
+                }
+            }
         })
+    }
+
+    private fun llenarCampos(data: List<Ternero>) {
+        idPhoto = data[0].idPhoto
+        fecha = data[0].date_nacimiento
+        binding.tvSelectDate.text = fecha
+        sexo = data[0].sexo
+        if(sexo == "Macho"){
+            binding.cbMasc.isChecked = true
+        } else {binding.cbHembra.isChecked = true}
+        binding.etMadre.setText(data[0].madre)
+        binding.etPadre.setText(data[0].padre)
+        binding.etRaza.setText(data[0].raza)
+        binding.btnUpload.text = getString(R.string.btn_change_photo)
+        binding.tvNoPhoto.visibility = View.GONE
+        binding.imgUpload.visibility = View.VISIBLE
+        Glide.with(requireContext())
+                .load(data[0].url_photo)
+                .centerCrop()
+                .into(binding.imgUpload)
+        binding.btnNewTernero.visibility = View.VISIBLE
+        binding.btnNewTernero.text = getString(R.string.modificar_ternero)
     }
 
     private fun activeButtonNewTernero() {
@@ -133,8 +180,16 @@ class AddTerneroFragment : Fragment(R.layout.fragment_add_ternero) {
 
         mStorageReference = FirebaseStorage.getInstance().reference
 
-        val storageReference = mStorageReference.child("FotosTerneros")
-                .child(UserUid).child("${UUID.randomUUID()}")
+        val storageReference: StorageReference = if(document != ""){
+            if(idPhoto == ""){
+                idPhoto = "${UUID.randomUUID()}"
+            }
+            mStorageReference.child("FotosTerneros")
+                    .child(UserUid).child(idPhoto)
+        }else{
+            mStorageReference.child("FotosTerneros")
+                    .child(UserUid).child("${UUID.randomUUID()}")
+        }
         imageUpload.let {
             storageReference.putFile(imageUpload)
                     .addOnProgressListener {
@@ -149,12 +204,10 @@ class AddTerneroFragment : Fragment(R.layout.fragment_add_ternero) {
                         Toast.makeText(requireContext(), "Foto sudida", Toast.LENGTH_SHORT).show()
                         it.storage.downloadUrl.addOnSuccessListener {
                             URL = it.toString()
+                            mapTernero["url_photo"] = it.toString()
                         }
                         idPhoto = it.storage.name
-                        /*
-                        val namePhoto = it.storage.name
-                        Log.d("namePhotoUri", namePhoto)
-                         */
+                        mapTernero["idPhoto"] = it.storage.name
                     }
                     .addOnFailureListener{
                         Toast.makeText(requireContext(), "Error al subir la foto", Toast.LENGTH_SHORT)
@@ -196,18 +249,46 @@ class AddTerneroFragment : Fragment(R.layout.fragment_add_ternero) {
 
     private fun validate() {
         if(obtenerSexo() && obtenerFecha()){
-            insertRegistro()
+            if(document != ""){
+                modificarRegistro()
+            } else {
+                insertRegistro()
+            }
         } else Toast.makeText(requireContext(), "Verifique fecha y sexo",
             Toast.LENGTH_LONG).show()
     }
 
+    private fun modificarRegistro() {
+        mapTernero["id"] = GenerateId().generateID(fecha)
+        mapTernero["date_nacimiento"] = fecha
+        mapTernero["sexo"] = sexo
+        mapTernero["madre"] = binding.etMadre.text.toString().trim()
+        mapTernero["padre"] = binding.etPadre.text.toString().trim()
+        mapTernero["raza"] = binding.etRaza.text.toString().trim()
+
+        viewModel.updateItemTernero(UserUid, document, mapTernero).observe(viewLifecycleOwner, { result->
+            when(result){
+                is Resource.Loading -> {
+                }
+                is Resource.Success -> {
+                    Toast.makeText(requireContext(), "$result.data", Toast.LENGTH_LONG).show()
+                    activity?.onBackPressed()
+                }
+                is Resource.Failure -> {
+                    Toast.makeText(requireContext(), "Error: ${result.exception}", Toast.LENGTH_SHORT)
+                            .show()
+                }
+            }
+        })
+
+    }
+
     private fun insertRegistro() {
-        val fecha_nacimiento = fecha
         val madre = binding.etMadre.text.toString().trim()
         val padre = binding.etPadre.text.toString().trim()
         val raza = binding.etRaza.text.toString().trim()
 
-        val ternero: MutableList<String> = mutableListOf(fecha_nacimiento, sexo, madre, padre, raza,
+        val ternero: MutableList<String> = mutableListOf(fecha, sexo, madre, padre, raza,
                      URL, idPhoto)
 
         viewModel.setNewTernero(ternero, UserUid).observe(viewLifecycleOwner, { result->
