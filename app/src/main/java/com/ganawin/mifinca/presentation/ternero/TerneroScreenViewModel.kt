@@ -4,9 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
 import com.ganawin.mifinca.core.Resource
-import com.ganawin.mifinca.domain.auth.LoginRepo
 import com.ganawin.mifinca.domain.terneros.TerneroRepo
-import com.ganawin.mifinca.presentation.auth.LoginScreenViewModel
 import kotlinx.coroutines.Dispatchers
 
 class TerneroScreenViewModel(private val repo: TerneroRepo): ViewModel() {
@@ -58,6 +56,7 @@ class TerneroScreenViewModel(private val repo: TerneroRepo): ViewModel() {
     }
 
 }
+@Suppress("UNCHECKED_CAST")
 class TerneroScreenViewModelFactory(private val repo: TerneroRepo): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return TerneroScreenViewModel(repo) as T

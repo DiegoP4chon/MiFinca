@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.ganawin.mifinca.R
 import com.ganawin.mifinca.core.Resource
@@ -28,7 +27,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentLoginBinding.bind(view)
 
-        isUserLoggedIn() //Si el usuario esta logueado
+        isUserLoggedIn()
         doLogin()
 
         binding.tvRegister.setOnClickListener { callFragmentRegister() }
@@ -81,7 +80,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 is Resource.Failure -> {
                     binding.progressBar.visibility = View.GONE
                     binding.btnLogin.isEnabled = true
-                    Toast.makeText(requireContext(), "Error: ${result.exception}", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), getString(R.string.invalid_user), Toast.LENGTH_SHORT)
                         .show()
                 }
             }

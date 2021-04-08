@@ -5,17 +5,12 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.ganawin.mifinca.R
-import com.ganawin.mifinca.data.remote.terneros.TernerosDataSource
 import com.ganawin.mifinca.databinding.FragmentHomeBinding
-import com.ganawin.mifinca.domain.terneros.TerneroRepoImpl
-import com.ganawin.mifinca.presentation.ternero.TerneroScreenViewModel
-import com.ganawin.mifinca.presentation.ternero.TerneroScreenViewModelFactory
 import com.google.firebase.auth.FirebaseAuth
 
-class HomeFragment : Fragment(R.layout.fragment_home,) {
+class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private lateinit var binding: FragmentHomeBinding
 
@@ -53,7 +48,7 @@ class HomeFragment : Fragment(R.layout.fragment_home,) {
         val activity: Activity?
         firebaseAuth.currentUser?.let {
             firebaseAuth.signOut()
-            Toast.makeText(requireContext(), "Sesion finalizada", Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), getString(R.string.session_close), Toast.LENGTH_SHORT)
                 .show()
         }
         activity = getActivity()

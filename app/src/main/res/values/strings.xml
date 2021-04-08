@@ -83,4 +83,26 @@
     <string name="img_hembra">Foto hembra cortejos</string>
     <string name="modificar_cortejo">Modificar datos</string>
     <string name="modificar_ternero">Modificar</string>
+    <string name="invalid_user">Verifique su correo y contraseña</string>
+    <string name="complete_registro">Complete todos los campos</string>
+    <string name="invalid_email">Error, Verifique su correo y contraseña</string>
+    <string name="error_consulta">No ha sido posible mostrar los datos, Intente luego</string>
+    <string name="petition_select_date">Por favor seleccione la fecha</string>
+    <string name="confirm_update_register">Registro actualizado</string>
+    <string name="error_update_register">No ha sido posible modificar el registro</string>
+    <string name="error_add_register">No ha sido posible guardar, Intente luego</string>
+    <string name="error_open_gallery">No es posible abrir la galeria</string>
+    <string name="confirm_upload_photo">Foto sudida</string>
+    <string name="failure_upload_photo">Error al subir la foto</string>
+    <string name="error_delete_register">No ha sido posible eliminar el registro</string>
+    <string name="confirm_delete_register">Registro eliminado</string>
+    <string name="session_close">Sesión finalizada</string>
+    <string name="confirm_add_register">Registro guardado</string>
+    <string name="paga_leche">Pago</string>
+    <string name="pesos">pesos</string>
+    <string name="animal_macho">Macho</string>
+    <string name="error_take_picture">No es posible toma la foto</string>
+    <string name="error_permission_storage">Debe habilitar el permiso de almacenamiento</string>
+    <string name="animal_hembra">Hembra</string>
+    <string name="alert_sexo_date">Verifique la fecha y el sexo</string>
 </resources>

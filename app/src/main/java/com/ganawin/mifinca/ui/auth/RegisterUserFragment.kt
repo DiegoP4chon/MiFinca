@@ -1,18 +1,14 @@
 package com.ganawin.mifinca.ui.auth
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.ganawin.mifinca.R
 import com.ganawin.mifinca.core.Resource
 import com.ganawin.mifinca.data.remote.auth.LoginDataSource
-import com.ganawin.mifinca.databinding.FragmentHomeBinding
 import com.ganawin.mifinca.databinding.FragmentRegisterUserBinding
 import com.ganawin.mifinca.domain.auth.LoginRepoImpl
 import com.ganawin.mifinca.presentation.auth.LoginScreenViewModel
@@ -41,15 +37,15 @@ class RegisterUserFragment : Fragment(R.layout.fragment_register_user) {
                 val email = binding.etEmail.text.toString().trim()
                 val password = binding.etPass.text.toString().trim()
 
-                CreateUser(email, password)
+                createUser(email, password)
 
         } else {
-            Toast.makeText(requireContext(), "Complete todos los campos", Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), getString(R.string.complete_registro), Toast.LENGTH_SHORT)
                 .show()
         }
     }
 
-    private fun CreateUser(email: String, password: String){
+    private fun createUser(email: String, password: String){
 
         viewModel.createUser(email, password).observe(viewLifecycleOwner, { result ->
             when(result){
@@ -64,7 +60,7 @@ class RegisterUserFragment : Fragment(R.layout.fragment_register_user) {
                 is Resource.Failure -> {
                     binding.progressBar.visibility = View.GONE
                     binding.btnRegister.isEnabled = true
-                    Toast.makeText(requireContext(), "Error: ${result.exception}", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), getString(R.string.invalid_email), Toast.LENGTH_SHORT)
                         .show()
                 }
             }

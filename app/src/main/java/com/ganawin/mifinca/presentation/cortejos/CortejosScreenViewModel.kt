@@ -54,6 +54,7 @@ class CortejosScreenViewModel(private val repo: CortejosRepo): ViewModel() {
         }
     }
 }
+@Suppress("UNCHECKED_CAST")
 class CortejosScreenViewModelFactory(private val repo: CortejosRepo): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return CortejosScreenViewModel(repo) as T

@@ -10,7 +10,7 @@ import java.util.*
 
 class CortejosDataSource {
 
-    val firebaseFirestore = FirebaseFirestore.getInstance()
+    private val firebaseFirestore = FirebaseFirestore.getInstance()
     private var result = ""
 
     suspend fun setNewCortejo(mutableList: MutableList<String>, colecction: String): String {

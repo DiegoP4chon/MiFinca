@@ -53,6 +53,7 @@ class VentasScreenViewModel(private val repo: VentasRepo): ViewModel() {
         }
     }
 }
+@Suppress("UNCHECKED_CAST")
 class VentasScreenViewModelFactory(private val repo: VentasRepo): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return VentasScreenViewModel(repo) as T

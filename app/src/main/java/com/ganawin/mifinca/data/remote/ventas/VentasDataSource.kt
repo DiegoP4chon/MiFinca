@@ -10,7 +10,7 @@ import java.util.*
 
 class VentasDataSource {
 
-    val firebaseFirestore = FirebaseFirestore.getInstance()
+    private val firebaseFirestore = FirebaseFirestore.getInstance()
     private var result = ""
 
     suspend fun setNewVenta(mutableList: MutableList<String>, colecction: String): String{

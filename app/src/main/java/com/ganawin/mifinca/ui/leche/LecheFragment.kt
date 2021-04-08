@@ -2,7 +2,6 @@ package com.ganawin.mifinca.ui.leche
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
@@ -25,12 +24,13 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.*
 import kotlin.collections.HashMap
 
+@Suppress("UNUSED_ANONYMOUS_PARAMETER")
 class LecheFragment : Fragment(R.layout.fragment_leche), OnClickListenerLeche {
 
     private lateinit var binding: FragmentLecheBinding
     private val viewModel by viewModels<LecheScreenViewModel>
             { LecheScreenViewModelFactory(LecheRepoImpl(LecheDataSource())) }
-    private lateinit var UserUIDCollection: String
+    private lateinit var userUidCollection: String
     private lateinit var calendar: Calendar
     private var year = 0
     private var month = 0
@@ -93,7 +93,7 @@ class LecheFragment : Fragment(R.layout.fragment_leche), OnClickListenerLeche {
     }
 
     private fun getListFilter(fechaInicio: Int, fechaFin: Int) {
-        viewModel.getListLecheFilter(UserUIDCollection, fechaInicio, fechaFin)
+        viewModel.getListLecheFilter(userUidCollection, fechaInicio, fechaFin)
             .observe(viewLifecycleOwner, { result ->
             when(result){
                 is Resource.Loading -> {}
@@ -104,7 +104,7 @@ class LecheFragment : Fragment(R.layout.fragment_leche), OnClickListenerLeche {
                     binding.btnConsultarPago.visibility = View.VISIBLE
                 }
                 is Resource.Failure -> {
-                    Toast.makeText(requireContext(), "No se encontro registros", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), getString(R.string.error_consulta), Toast.LENGTH_SHORT)
                         .show()
                 }
             }
@@ -120,14 +120,15 @@ class LecheFragment : Fragment(R.layout.fragment_leche), OnClickListenerLeche {
     }
 
     private fun obtenerLeche() {
-        viewModel.getListLeche(UserUIDCollection).observe(viewLifecycleOwner, { result ->
+        viewModel.getListLeche(userUidCollection).observe(viewLifecycleOwner, { result ->
             when(result){
                 is Resource.Loading -> {}
                 is Resource.Success -> {
                     binding.rvLeche.adapter = LecheScreenAdapter(result.data, this)
                 }
                 is Resource.Failure -> {
-                    Log.d("VerLeche", "Error ${result.exception}")
+                    Toast.makeText(requireContext(), getString(R.string.error_consulta), Toast.LENGTH_SHORT)
+                            .show()
                 }
             }
         })
@@ -164,23 +165,23 @@ class LecheFragment : Fragment(R.layout.fragment_leche), OnClickListenerLeche {
     }
 
     private fun userUID() {
-        UserUIDCollection = "leche${CurrentUser().userUid()}"
+        userUidCollection = "leche${CurrentUser().userUid()}"
     }
 
     private fun registrarLeche() {
         val fecha = binding.btnFecha.text.toString().trim()
         if(binding.etEntregaLeche.text.toString().trim().isNotEmpty()){
             val litros = binding.etEntregaLeche.text.toString().trim().toInt()
-            viewModel.registrarLeche(litros, fecha, UserUIDCollection).observe(viewLifecycleOwner, { result ->
+            viewModel.registrarLeche(litros, fecha, userUidCollection).observe(viewLifecycleOwner, { result ->
                 when(result){
                     is Resource.Loading -> {}
                     is Resource.Success -> {
-                        Toast.makeText(requireContext(), result.data, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), getString(R.string.confirm_add_register), Toast.LENGTH_SHORT).show()
                         binding.etEntregaLeche.setText("")
                         obtenerLeche()
                     }
                     is Resource.Failure -> {
-                        Toast.makeText(requireContext(), "${result.exception}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), getString(R.string.error_add_register), Toast.LENGTH_SHORT).show()
                     }
                 }
             })
@@ -225,7 +226,7 @@ class LecheFragment : Fragment(R.layout.fragment_leche), OnClickListenerLeche {
     }
 
     private fun updateLeche(mapLeche: HashMap<String, Any>, document: String) {
-        viewModel.updateRegistroLeche(UserUIDCollection, document, mapLeche)
+        viewModel.updateRegistroLeche(userUidCollection, document, mapLeche)
                 .observe(viewLifecycleOwner, { result ->
                     when(result){
                         is Resource.Loading -> {}
@@ -234,11 +235,11 @@ class LecheFragment : Fragment(R.layout.fragment_leche), OnClickListenerLeche {
                             binding.etEntregaLeche.setText("")
                             configureButtonAndTitle()
                             obtenerLeche()
-                            Toast.makeText(requireContext(), "${result.data}", Toast.LENGTH_SHORT)
+                            Toast.makeText(requireContext(), getString(R.string.confirm_update_register), Toast.LENGTH_SHORT)
                                     .show()
                         }
                         is Resource.Failure -> {
-                            Toast.makeText(requireContext(), "Ha ocurrido un error", Toast.LENGTH_SHORT)
+                            Toast.makeText(requireContext(), getString(R.string.error_update_register), Toast.LENGTH_SHORT)
                                     .show()
                         }
                     }

@@ -1,7 +1,6 @@
 package com.ganawin.mifinca.ui.leche
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import com.ganawin.mifinca.R
@@ -22,7 +21,6 @@ class ProducidoFragment : Fragment(R.layout.fragment_producido) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentProducidoBinding.bind(view)
-        Log.d("Producido", "Total litros param: $totalLitros")
         val litros = "${getString(R.string.total_producido)} $totalLitros ${getString(R.string.litros)}"
         binding.tvProducidoLeche.text = litros
 
@@ -31,7 +29,7 @@ class ProducidoFragment : Fragment(R.layout.fragment_producido) {
 
     private fun calcularPago() {
         val precio = totalLitros * binding.etPrice.text.toString().toInt()
-        val pago = "Producido: $precio pesos"
+        val pago = "${getString(R.string.paga_leche)}: $precio ${getString(R.string.pesos)}"
         binding.tvTitleProducido.text = pago
     }
 }

@@ -7,7 +7,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
@@ -32,7 +31,7 @@ class AddCortejoFragment : Fragment(R.layout.fragment_add_cortejo) {
 
     private lateinit var binding: FragmentAddCortejoBinding
     private lateinit var mStorageReference: StorageReference
-    private var UserUid: String = ""
+    private var userUid: String = ""
     private var document: String = ""
     private var idPhotoMacho = ""
     private var urlPhotoMacho = ""
@@ -46,8 +45,8 @@ class AddCortejoFragment : Fragment(R.layout.fragment_add_cortejo) {
     private var month = 0
     private var day = 0
 
-    private val REQUEST_IMAGE_MACHO = 4
-    private val REQUEST_IMAGE_HEMBRA = 5
+    private val requestImageMacho = 4
+    private val requestImageHembra = 5
 
     private val viewModel by viewModels<CortejosScreenViewModel> { CortejosScreenViewModelFactory(
         CortejosRepoImpl(CortejosDataSource())
@@ -56,7 +55,7 @@ class AddCortejoFragment : Fragment(R.layout.fragment_add_cortejo) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let { bundle ->
-            UserUid = bundle.getString("UID", "")
+            userUid = bundle.getString("UID", "")
             document = bundle.getString("document", "")
         }
     }
@@ -75,12 +74,12 @@ class AddCortejoFragment : Fragment(R.layout.fragment_add_cortejo) {
             binding.tilMachoCortejo, binding.tilMachoRaza,
             binding.tilHembraCortejo, binding.tilHembraRaza
         ) }
-        binding.btnAddPhotoMacho.setOnClickListener { openGallery(REQUEST_IMAGE_MACHO) }
-        binding.btnAddPhotoHembra.setOnClickListener { openGallery(REQUEST_IMAGE_HEMBRA) }
+        binding.btnAddPhotoMacho.setOnClickListener { openGallery(requestImageMacho) }
+        binding.btnAddPhotoHembra.setOnClickListener { openGallery(requestImageHembra) }
     }
 
     private fun cargarFormulario(document: String) {
-        viewModel.getOneCortejo(UserUid, document).observe(viewLifecycleOwner, { result->
+        viewModel.getOneCortejo(userUid, document).observe(viewLifecycleOwner, { result->
             when(result){
                 is Resource.Loading -> {
                 }
@@ -88,7 +87,7 @@ class AddCortejoFragment : Fragment(R.layout.fragment_add_cortejo) {
                     llenarCampos(result.data)
                 }
                 is Resource.Failure -> {
-                    Toast.makeText(requireContext(), "Error: ${result.exception}", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), getString(R.string.error_consulta), Toast.LENGTH_SHORT)
                             .show()
                 }
             }
@@ -131,8 +130,8 @@ class AddCortejoFragment : Fragment(R.layout.fragment_add_cortejo) {
     }
 
     private fun validateFecha() {
-        if(binding.btnFechaCortejo.text.toString() == "Seleccionar"){
-            Toast.makeText(requireContext(), "Selecciona la fecha", Toast.LENGTH_SHORT).show()
+        if(binding.btnFechaCortejo.text.toString() == getString(R.string.seleccione_fecha)){
+            Toast.makeText(requireContext(), getString(R.string.petition_select_date), Toast.LENGTH_SHORT).show()
         } else {
             if(document != ""){
                 modificarRegistro()
@@ -150,16 +149,16 @@ class AddCortejoFragment : Fragment(R.layout.fragment_add_cortejo) {
         mapCortejo["caract_hembra"] = binding.etHembraCortejo.text.toString().trim()
         mapCortejo["raza_hembra"] = binding.etHembraRaza.text.toString().trim()
 
-        viewModel.updateCortejo(UserUid, document, mapCortejo).observe(viewLifecycleOwner, { result->
+        viewModel.updateCortejo(userUid, document, mapCortejo).observe(viewLifecycleOwner, { result->
             when(result){
                 is Resource.Loading -> {
                 }
                 is Resource.Success -> {
-                    Toast.makeText(requireContext(), "$result.data", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), getString(R.string.confirm_update_register), Toast.LENGTH_LONG).show()
                     activity?.onBackPressed()
                 }
                 is Resource.Failure -> {
-                    Toast.makeText(requireContext(), "Error: ${result.exception}", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), getString(R.string.error_update_register), Toast.LENGTH_SHORT)
                             .show()
                 }
             }
@@ -176,16 +175,15 @@ class AddCortejoFragment : Fragment(R.layout.fragment_add_cortejo) {
         val listaCortejo: MutableList<String> = mutableListOf(fecha, caractMacho, machoRaza, idPhotoMacho,
             urlPhotoMacho, caractHembra, hembraRaza, idPhotoHembra, urlPhotoHembra)
 
-        viewModel.setNewCortejo(listaCortejo, UserUid).observe(viewLifecycleOwner, { result->
+        viewModel.setNewCortejo(listaCortejo, userUid).observe(viewLifecycleOwner, { result->
             when(result){
                 is Resource.Loading -> {
                 }
                 is Resource.Success -> {
-                    Toast.makeText(requireContext(), result.data, Toast.LENGTH_LONG).show()
                     activity?.onBackPressed()
                 }
                 is Resource.Failure -> {
-                    Toast.makeText(requireContext(), "Error: ${result.exception}", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), getString(R.string.error_add_register), Toast.LENGTH_SHORT)
                         .show()
                 }
             }
@@ -197,20 +195,20 @@ class AddCortejoFragment : Fragment(R.layout.fragment_add_cortejo) {
         try {
             startActivityForResult(openPictureGalley, requestImage)
         } catch (e: ActivityNotFoundException){
-            Toast.makeText(requireContext(), "No es posible abrir la galeria", Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), getString(R.string.error_open_gallery), Toast.LENGTH_SHORT)
                 .show()
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE_MACHO && resultCode == Activity.RESULT_OK) {
+        if (requestCode == requestImageMacho && resultCode == Activity.RESULT_OK) {
             val imageSelectedUri: Uri = data?.data!!
             binding.imgUploadCortejoMacho.visibility = View.VISIBLE
             binding.imgUploadCortejoMacho.setImageURI(imageSelectedUri)
             uploadPhoto(imageSelectedUri, -1)
         }
-        if (requestCode == REQUEST_IMAGE_HEMBRA && resultCode == Activity.RESULT_OK) {
+        if (requestCode == requestImageHembra && resultCode == Activity.RESULT_OK) {
             val imageSelectedUri: Uri = data?.data!!
             binding.imgUploadCortejoHembra.visibility = View.VISIBLE
             binding.imgUploadCortejoHembra.setImageURI(imageSelectedUri)
@@ -222,8 +220,7 @@ class AddCortejoFragment : Fragment(R.layout.fragment_add_cortejo) {
         mStorageReference = FirebaseStorage.getInstance().reference
 
         val storageReference: StorageReference = if(document != ""){
-            var idPhotoUpload = ""
-            idPhotoUpload = if(identificador < 0){
+            val idPhotoUpload: String = if(identificador < 0){
                 if(idPhotoMacho == ""){
                     "${UUID.randomUUID()}"
                 } else {
@@ -237,11 +234,11 @@ class AddCortejoFragment : Fragment(R.layout.fragment_add_cortejo) {
                 }
             }
             mStorageReference.child("FotosCortejos")
-                    .child(UserUid).child(idPhotoUpload)
+                    .child(userUid).child(idPhotoUpload)
 
         }else{
             mStorageReference.child("FotosCortejos")
-                    .child(UserUid).child("${UUID.randomUUID()}")
+                    .child(userUid).child("${UUID.randomUUID()}")
         }
         imageSelectedUri.let {
             storageReference.putFile(imageSelectedUri)
@@ -253,9 +250,9 @@ class AddCortejoFragment : Fragment(R.layout.fragment_add_cortejo) {
                         binding.pbCortejo.visibility = View.GONE
                         binding.btnRegistrarCortejo.visibility = View.VISIBLE
                     }
-                    .addOnSuccessListener {
-                        Toast.makeText(requireContext(), "Foto sudida", Toast.LENGTH_SHORT).show()
-                        it.storage.downloadUrl.addOnSuccessListener {
+                    .addOnSuccessListener { resSuccess ->
+                        Toast.makeText(requireContext(), getString(R.string.confirm_upload_photo), Toast.LENGTH_SHORT).show()
+                        resSuccess.storage.downloadUrl.addOnSuccessListener {
                             if(identificador < 0){
                                 urlPhotoMacho = it.toString()
                                 mapCortejo["urlPhoto_macho"] = it.toString()
@@ -265,20 +262,21 @@ class AddCortejoFragment : Fragment(R.layout.fragment_add_cortejo) {
                             }
                         }
                         if(identificador < 0){
-                            idPhotoMacho = it.storage.name
-                            mapCortejo["idPhoto_macho"] = it.storage.name
+                            idPhotoMacho = resSuccess.storage.name
+                            mapCortejo["idPhoto_macho"] = resSuccess.storage.name
                         } else {
-                            idPhotoHembra = it.storage.name
-                            mapCortejo["idPhoto_hembra"] = it.storage.name
+                            idPhotoHembra = resSuccess.storage.name
+                            mapCortejo["idPhoto_hembra"] = resSuccess.storage.name
                         }
                     }
                     .addOnFailureListener{
-                        Toast.makeText(requireContext(), "Error al subir la foto", Toast.LENGTH_SHORT)
+                        Toast.makeText(requireContext(), getString(R.string.failure_upload_photo), Toast.LENGTH_SHORT)
                                 .show()
                     }
         }
     }
 
+    @Suppress("UNUSED_ANONYMOUS_PARAMETER")
     private fun showDatePicker() {
         calendar = Calendar.getInstance()
         year = calendar.get(Calendar.YEAR)
@@ -286,7 +284,7 @@ class AddCortejoFragment : Fragment(R.layout.fragment_add_cortejo) {
         day = calendar.get(Calendar.DAY_OF_MONTH)
 
         val datePickerDialog = DatePickerDialog(requireContext(), {
-                view, year, month, dayOfMonth ->
+            viewPicker, year, month, dayOfMonth ->
             val fechaCortejo = "$dayOfMonth/${month+1}/$year"
             binding.btnFechaCortejo.text = fechaCortejo
         }, year, month, day)

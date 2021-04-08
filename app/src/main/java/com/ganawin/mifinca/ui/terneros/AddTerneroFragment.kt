@@ -7,12 +7,9 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
-import android.widget.CalendarView
 import android.widget.Toast
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.ganawin.mifinca.R
@@ -33,15 +30,16 @@ import java.util.*
 import kotlin.collections.HashMap
 
 
+@Suppress("UNUSED_ANONYMOUS_PARAMETER")
 class AddTerneroFragment : Fragment(R.layout.fragment_add_ternero) {
 
-    private val REQUEST_IMAGE_CAPTURE = 1
-    private val REQUEST_IMAGE_GALLERY = 2
+    private val requestImageCapture = 1
+    private val requestImageGalley = 2
 
     private var fecha: String =""
     private var sexo: String =""
-    private var UserUid: String = ""
-    private var URL: String = ""
+    private var userUid: String = ""
+    private var url: String = ""
     private var idPhoto: String = ""
     private var document: String = ""
     private var mapTernero: HashMap<String, Any> = hashMapOf()
@@ -55,7 +53,7 @@ class AddTerneroFragment : Fragment(R.layout.fragment_add_ternero) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let { bundle ->
-            UserUid = bundle.getString("UID", "")
+            userUid = bundle.getString("UID", "")
             document = bundle.getString("document", "")
         }
     }
@@ -78,7 +76,7 @@ class AddTerneroFragment : Fragment(R.layout.fragment_add_ternero) {
 
 
         val calendar = binding.calendarNacimiento
-        calendar.setOnDateChangeListener { view, year, month, dayOfMonth ->
+        calendar.setOnDateChangeListener { viewCalendar, year, month, dayOfMonth ->
             fecha = "$dayOfMonth/${month + 1}/$year"
             Toast.makeText(requireContext(), fecha, Toast.LENGTH_LONG).show()
             binding.tvSelectDate.text = fecha
@@ -87,7 +85,7 @@ class AddTerneroFragment : Fragment(R.layout.fragment_add_ternero) {
     }
 
     private fun cargarFormulario(document: String) {
-        viewModel.fetchOneTernero(UserUid, document).observe(viewLifecycleOwner, { result->
+        viewModel.fetchOneTernero(userUid, document).observe(viewLifecycleOwner, { result->
             when(result){
                 is Resource.Loading -> {
                 }
@@ -95,7 +93,7 @@ class AddTerneroFragment : Fragment(R.layout.fragment_add_ternero) {
                     llenarCampos(result.data)
                 }
                 is Resource.Failure -> {
-                    Toast.makeText(requireContext(), "Error: ${result.exception}", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), getString(R.string.error_consulta), Toast.LENGTH_SHORT)
                             .show()
                 }
             }
@@ -107,7 +105,7 @@ class AddTerneroFragment : Fragment(R.layout.fragment_add_ternero) {
         fecha = data[0].date_nacimiento
         binding.tvSelectDate.text = fecha
         sexo = data[0].sexo
-        if(sexo == "Macho"){
+        if(sexo == getString(R.string.animal_macho)){
             binding.cbMasc.isChecked = true
         } else {binding.cbHembra.isChecked = true}
         binding.etMadre.setText(data[0].madre)
@@ -132,9 +130,9 @@ class AddTerneroFragment : Fragment(R.layout.fragment_add_ternero) {
     private fun openPictureGallery() {
         val openPictureGalley = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         try {
-            startActivityForResult(openPictureGalley, REQUEST_IMAGE_GALLERY)
+            startActivityForResult(openPictureGalley, requestImageGalley)
         } catch (e: ActivityNotFoundException){
-            Toast.makeText(requireContext(), "No es posible abrir la galeria", Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), getString(R.string.error_open_gallery), Toast.LENGTH_SHORT)
                 .show()
         }
     }
@@ -142,16 +140,17 @@ class AddTerneroFragment : Fragment(R.layout.fragment_add_ternero) {
     private fun dispacthTakePictureIntent() {
         val takepictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         try{
-            startActivityForResult(takepictureIntent, REQUEST_IMAGE_CAPTURE)
+            startActivityForResult(takepictureIntent, requestImageCapture)
         } catch (e: ActivityNotFoundException){
-            Toast.makeText(requireContext(), "No es posible toma la foto", Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), getString(R.string.error_take_picture), Toast.LENGTH_SHORT)
                 .show()
         }
     }
 
+    @Suppress("DEPRECATION")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+        if (requestCode == requestImageCapture && resultCode == Activity.RESULT_OK) {
             val imageCapture: Bitmap = data?.extras?.get("data") as Bitmap
             val baos = ByteArrayOutputStream()
             imageCapture.compress(Bitmap.CompressFormat.PNG, 100, baos)
@@ -163,12 +162,12 @@ class AddTerneroFragment : Fragment(R.layout.fragment_add_ternero) {
                 binding.imgUpload.setImageURI(imageUri)
                 uploadPhoto(imageUri)
             }catch (e: Exception){
-                Snackbar.make(binding.root, "Debe habilitar permiso de almacenamiento",
+                Snackbar.make(binding.root, getString(R.string.error_permission_storage),
                     Snackbar.LENGTH_SHORT).show()
             }
 
         }
-        if (requestCode == REQUEST_IMAGE_GALLERY && resultCode == Activity.RESULT_OK) {
+        if (requestCode == requestImageGalley && resultCode == Activity.RESULT_OK) {
             val imageSelectedUri: Uri = data?.data!!
             binding.imgUpload.visibility = View.VISIBLE
             binding.imgUpload.setImageURI(imageSelectedUri)
@@ -176,7 +175,7 @@ class AddTerneroFragment : Fragment(R.layout.fragment_add_ternero) {
         }
     }
 
-    fun uploadPhoto(imageUpload: Uri) {
+    private fun uploadPhoto(imageUpload: Uri) {
 
         mStorageReference = FirebaseStorage.getInstance().reference
 
@@ -185,10 +184,10 @@ class AddTerneroFragment : Fragment(R.layout.fragment_add_ternero) {
                 idPhoto = "${UUID.randomUUID()}"
             }
             mStorageReference.child("FotosTerneros")
-                    .child(UserUid).child(idPhoto)
+                    .child(userUid).child(idPhoto)
         }else{
             mStorageReference.child("FotosTerneros")
-                    .child(UserUid).child("${UUID.randomUUID()}")
+                    .child(userUid).child("${UUID.randomUUID()}")
         }
         imageUpload.let {
             storageReference.putFile(imageUpload)
@@ -200,35 +199,35 @@ class AddTerneroFragment : Fragment(R.layout.fragment_add_ternero) {
                         binding.pbUploadImage.visibility = View.GONE
                         binding.btnNewTernero.visibility = View.VISIBLE
                     }
-                    .addOnSuccessListener {
-                        Toast.makeText(requireContext(), "Foto sudida", Toast.LENGTH_SHORT).show()
-                        it.storage.downloadUrl.addOnSuccessListener {
-                            URL = it.toString()
+                    .addOnSuccessListener { resSuccess ->
+                        Toast.makeText(requireContext(), getString(R.string.confirm_upload_photo), Toast.LENGTH_SHORT).show()
+                        resSuccess.storage.downloadUrl.addOnSuccessListener {
+                            url = it.toString()
                             mapTernero["url_photo"] = it.toString()
                         }
-                        idPhoto = it.storage.name
-                        mapTernero["idPhoto"] = it.storage.name
+                        idPhoto = resSuccess.storage.name
+                        mapTernero["idPhoto"] = resSuccess.storage.name
                     }
                     .addOnFailureListener{
-                        Toast.makeText(requireContext(), "Error al subir la foto", Toast.LENGTH_SHORT)
+                        Toast.makeText(requireContext(), getString(R.string.failure_upload_photo), Toast.LENGTH_SHORT)
                                 .show()
                     }
         }
     }
 
     private fun obtenerSexo(): Boolean {
-        if(binding.cbMasc.isChecked && binding.cbHembra.isChecked){
+        return if(binding.cbMasc.isChecked && binding.cbHembra.isChecked){
             binding.cbMasc.isChecked = false
             binding.cbHembra.isChecked = false
-            return false
+            false
         }else if (binding.cbHembra.isChecked) {
-            sexo = "Hembra"
-            return true
+            sexo = getString(R.string.animal_hembra)
+            true
         }else if (binding.cbMasc.isChecked){
-            sexo = "Macho"
-            return true
+            sexo = getString(R.string.animal_macho)
+            true
         }else{
-            return false
+            false
         }
     }
 
@@ -254,7 +253,7 @@ class AddTerneroFragment : Fragment(R.layout.fragment_add_ternero) {
             } else {
                 insertRegistro()
             }
-        } else Toast.makeText(requireContext(), "Verifique fecha y sexo",
+        } else Toast.makeText(requireContext(), getString(R.string.alert_sexo_date),
             Toast.LENGTH_LONG).show()
     }
 
@@ -266,16 +265,16 @@ class AddTerneroFragment : Fragment(R.layout.fragment_add_ternero) {
         mapTernero["padre"] = binding.etPadre.text.toString().trim()
         mapTernero["raza"] = binding.etRaza.text.toString().trim()
 
-        viewModel.updateItemTernero(UserUid, document, mapTernero).observe(viewLifecycleOwner, { result->
+        viewModel.updateItemTernero(userUid, document, mapTernero).observe(viewLifecycleOwner, { result->
             when(result){
                 is Resource.Loading -> {
                 }
                 is Resource.Success -> {
-                    Toast.makeText(requireContext(), "$result.data", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), getString(R.string.confirm_update_register), Toast.LENGTH_LONG).show()
                     activity?.onBackPressed()
                 }
                 is Resource.Failure -> {
-                    Toast.makeText(requireContext(), "Error: ${result.exception}", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), getString(R.string.error_update_register), Toast.LENGTH_SHORT)
                             .show()
                 }
             }
@@ -289,18 +288,17 @@ class AddTerneroFragment : Fragment(R.layout.fragment_add_ternero) {
         val raza = binding.etRaza.text.toString().trim()
 
         val ternero: MutableList<String> = mutableListOf(fecha, sexo, madre, padre, raza,
-                     URL, idPhoto)
+                     url, idPhoto)
 
-        viewModel.setNewTernero(ternero, UserUid).observe(viewLifecycleOwner, { result->
+        viewModel.setNewTernero(ternero, userUid).observe(viewLifecycleOwner, { result->
             when(result){
                 is Resource.Loading -> {
                 }
                 is Resource.Success -> {
-                    Toast.makeText(requireContext(), result.data, Toast.LENGTH_LONG).show()
                     activity?.onBackPressed()
                 }
                 is Resource.Failure -> {
-                    Toast.makeText(requireContext(), "Error: ${result.exception}", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), getString(R.string.error_add_register), Toast.LENGTH_SHORT)
                         .show()
                 }
             }

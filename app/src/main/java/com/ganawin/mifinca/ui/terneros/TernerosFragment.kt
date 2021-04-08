@@ -1,13 +1,11 @@
 package com.ganawin.mifinca.ui.terneros
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.ganawin.mifinca.R
 import com.ganawin.mifinca.core.CurrentUser
@@ -23,6 +21,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
+@Suppress("UNUSED_ANONYMOUS_PARAMETER")
 class TernerosFragment : Fragment(R.layout.fragment_terneros), OnClickListenerTernero {
 
     private lateinit var binding: FragmentTernerosBinding
@@ -50,10 +49,10 @@ class TernerosFragment : Fragment(R.layout.fragment_terneros), OnClickListenerTe
                 is Resource.Loading -> {}
                 is Resource.Success -> {
                     binding.rvTerneros.adapter = TerneroSreenAdapter(result.data, this)
-                    Log.d("FireTerneroError", "data: ${result.data}")
                 }
                 is Resource.Failure -> {
-                    Log.d("FireTerneroError", "Error ${result.exception}")
+                    Toast.makeText(requireContext(), getString(R.string.error_consulta), Toast.LENGTH_SHORT)
+                            .show()
                 }
             }
         })
@@ -78,7 +77,7 @@ class TernerosFragment : Fragment(R.layout.fragment_terneros), OnClickListenerTe
                 bundleOf("document" to document , "UID" to userUIDColecction))
     }
 
-    fun deleteTernero(document: String, idPhoto: String){
+    private fun deleteTernero(document: String, idPhoto: String){
         MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.confirm_delete)
                 .setPositiveButton(R.string.btn_delete) { dialogInterface, i ->
@@ -88,20 +87,19 @@ class TernerosFragment : Fragment(R.layout.fragment_terneros), OnClickListenerTe
                 .show()
     }
 
-    fun confirmDeleteTernero(document: String, idPhoto: String){
-        viewModel.deleteItemTernero(userUIDColecction, document).observe(viewLifecycleOwner, Observer { result ->
+    private fun confirmDeleteTernero(document: String, idPhoto: String){
+        viewModel.deleteItemTernero(userUIDColecction, document).observe(viewLifecycleOwner, { result ->
             when(result){
                 is Resource.Loading -> {}
                 is Resource.Success -> {
-                    Toast.makeText(requireContext(), result.data, Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), getString(R.string.confirm_delete_register), Toast.LENGTH_SHORT)
                             .show()
                     deletePhoto(idPhoto)
                     showTerneros()
                 }
                 is Resource.Failure -> {
-                    Toast.makeText(requireContext(), "ha ocurrido un error", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), getString(R.string.error_delete_register), Toast.LENGTH_SHORT)
                             .show()
-                    //Log.d("EliminandoRegistros", "Error ${result.exception}")
                 }
             }
         })

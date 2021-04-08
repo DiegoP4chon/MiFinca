@@ -7,7 +7,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
@@ -26,15 +25,15 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class AddVentaFragment : Fragment(R.layout.fragment_add_venta,) {
+@Suppress("UNUSED_ANONYMOUS_PARAMETER")
+class AddVentaFragment : Fragment(R.layout.fragment_add_venta) {
 
     private lateinit var binding: FragmentAddVentaBinding
     private lateinit var calendar: Calendar
     private lateinit var mStorageReference: StorageReference
-    private var UserUid: String = ""
+    private var userUid: String = ""
     private var document = ""
     private var urlPhoto = ""
     private var idPhoto = ""
@@ -45,7 +44,7 @@ class AddVentaFragment : Fragment(R.layout.fragment_add_venta,) {
     private var month = 0
     private var day = 0
 
-    private val REQUEST_IMAGE_GALLERY = 1
+    private val requestImageGallery = 1
 
     private val viewModel by viewModels<VentasScreenViewModel> { VentasScreenViewModelFactory(VentasRepoImpl(
         VentasDataSource()
@@ -54,9 +53,8 @@ class AddVentaFragment : Fragment(R.layout.fragment_add_venta,) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let { bundle ->
-            UserUid = bundle.getString("UID", "")
+            userUid = bundle.getString("UID", "")
             document = bundle.getString("document", "")
-            Log.d("isModificando", document)
         }
     }
 
@@ -75,7 +73,7 @@ class AddVentaFragment : Fragment(R.layout.fragment_add_venta,) {
     }
 
     private fun cargarFormulario(document: String) {
-        viewModel.getOneVenta(UserUid, document).observe(viewLifecycleOwner, { result->
+        viewModel.getOneVenta(userUid, document).observe(viewLifecycleOwner, { result->
             when(result){
                 is Resource.Loading -> {
                 }
@@ -83,7 +81,7 @@ class AddVentaFragment : Fragment(R.layout.fragment_add_venta,) {
                     llenarCampos(result.data)
                 }
                 is Resource.Failure -> {
-                    Toast.makeText(requireContext(), "Error: ${result.exception}", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), getString(R.string.error_consulta), Toast.LENGTH_SHORT)
                             .show()
                 }
             }
@@ -119,34 +117,34 @@ class AddVentaFragment : Fragment(R.layout.fragment_add_venta,) {
     }
 
     private fun validateFecha() {
-        if(binding.btnFechaVenta.text.toString() == "Seleccionar"){
-            Toast.makeText(requireContext(), "Selecciona la fecha", Toast.LENGTH_SHORT).show()
+        if(binding.btnFechaVenta.text.toString() == getString(R.string.seleccione_fecha)){
+            Toast.makeText(requireContext(), getString(R.string.petition_select_date), Toast.LENGTH_SHORT).show()
         } else {
             if(document != "") {
-                ModificarVenta()
+                modificarVenta()
             } else {
                 insertarVenta()
             }
         }
     }
 
-    private fun ModificarVenta() {
+    private fun modificarVenta() {
         mapVenta["id"] = GenerateId().generateID(binding.btnFechaVenta.text.toString())
         mapVenta["descripVenta"] = binding.etVenta.text.toString().trim()
         mapVenta["fecha_venta"] = binding.btnFechaVenta.text.toString()
         mapVenta["comprador"] = binding.etComprador.text.toString().trim()
         mapVenta["valorVenta"] = binding.etValorVenta.text.toString().trim().toLong()
 
-        viewModel.updateVenta(UserUid, document, mapVenta).observe(viewLifecycleOwner, { result->
+        viewModel.updateVenta(userUid, document, mapVenta).observe(viewLifecycleOwner, { result->
             when(result){
                 is Resource.Loading -> {
                 }
                 is Resource.Success -> {
-                    Toast.makeText(requireContext(), "$result.data", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), getString(R.string.confirm_update_register), Toast.LENGTH_LONG).show()
                     activity?.onBackPressed()
                 }
                 is Resource.Failure -> {
-                    Toast.makeText(requireContext(), "Error: ${result.exception}", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), getString(R.string.error_update_register), Toast.LENGTH_SHORT)
                             .show()
                 }
             }
@@ -163,16 +161,16 @@ class AddVentaFragment : Fragment(R.layout.fragment_add_venta,) {
         val listVenta: MutableList<String> = mutableListOf(fecha, descripVenta, comprador, valorVenta,
             idPhoto, urlPhoto)
 
-        viewModel.setNewVenta(listVenta, UserUid).observe(viewLifecycleOwner, { result->
+        viewModel.setNewVenta(listVenta, userUid).observe(viewLifecycleOwner, { result->
             when(result){
                 is Resource.Loading -> {
                 }
                 is Resource.Success -> {
-                    Toast.makeText(requireContext(), result.data, Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), getString(R.string.confirm_add_register), Toast.LENGTH_LONG).show()
                     activity?.onBackPressed()
                 }
                 is Resource.Failure -> {
-                    Toast.makeText(requireContext(), "Error: ${result.exception}", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), getString(R.string.error_add_register), Toast.LENGTH_SHORT)
                         .show()
                 }
             }
@@ -197,16 +195,16 @@ class AddVentaFragment : Fragment(R.layout.fragment_add_venta,) {
     private fun openGallery(){
         val openPictureGalley = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         try {
-            startActivityForResult(openPictureGalley, REQUEST_IMAGE_GALLERY)
+            startActivityForResult(openPictureGalley, requestImageGallery)
         } catch (e: ActivityNotFoundException){
-            Toast.makeText(requireContext(), "No es posible abrir la galeria", Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), getString(R.string.error_open_gallery), Toast.LENGTH_SHORT)
                 .show()
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE_GALLERY && resultCode == Activity.RESULT_OK) {
+        if (requestCode == requestImageGallery && resultCode == Activity.RESULT_OK) {
             val imageSelectedUri: Uri = data?.data!!
             binding.imgUploadVenta.visibility = View.VISIBLE
             binding.imgUploadVenta.setImageURI(imageSelectedUri)
@@ -222,10 +220,10 @@ class AddVentaFragment : Fragment(R.layout.fragment_add_venta,) {
                 idPhoto = "${UUID.randomUUID()}"
             }
             mStorageReference.child("FotosVentas")
-                    .child(UserUid).child(idPhoto)
+                    .child(userUid).child(idPhoto)
         }else{
             mStorageReference.child("FotosVentas")
-                    .child(UserUid).child("${UUID.randomUUID()}")
+                    .child(userUid).child("${UUID.randomUUID()}")
         }
         imageSelectedUri.let {
             storageReference.putFile(imageSelectedUri)
@@ -237,17 +235,17 @@ class AddVentaFragment : Fragment(R.layout.fragment_add_venta,) {
                     binding.pbVenta.visibility = View.GONE
                     binding.btnRegistrarVenta.visibility = View.VISIBLE
                 }
-                .addOnSuccessListener {
-                    Toast.makeText(requireContext(), "Foto sudida", Toast.LENGTH_SHORT).show()
-                    it.storage.downloadUrl.addOnSuccessListener {
+                .addOnSuccessListener { resSuccess ->
+                    Toast.makeText(requireContext(), getString(R.string.confirm_upload_photo), Toast.LENGTH_SHORT).show()
+                    resSuccess.storage.downloadUrl.addOnSuccessListener {
                         urlPhoto = it.toString()
                         mapVenta["url_Photo"] = it.toString()
                     }
-                    idPhoto = it.storage.name
-                    mapVenta["idPhoto"] = it.storage.name
+                    idPhoto = resSuccess.storage.name
+                    mapVenta["idPhoto"] = resSuccess.storage.name
                 }
                 .addOnFailureListener{
-                    Toast.makeText(requireContext(), "Error al subir la foto", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), getString(R.string.failure_upload_photo), Toast.LENGTH_SHORT)
                         .show()
                 }
         }

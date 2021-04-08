@@ -1,10 +1,12 @@
 package com.ganawin.mifinca.core
 
+import android.annotation.SuppressLint
 import java.text.SimpleDateFormat
 import java.util.*
 
 class CalculateEdad {
 
+    @SuppressLint("SimpleDateFormat")
     fun calcularEdad(fecha: String): String{
 
         val fechaNacDate: Date? = SimpleDateFormat("dd/MM/yyyy").parse(fecha)

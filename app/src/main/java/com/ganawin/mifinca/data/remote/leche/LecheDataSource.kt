@@ -1,6 +1,5 @@
 package com.ganawin.mifinca.data.remote.leche
 
-import android.util.Log
 import com.ganawin.mifinca.core.GenerateId
 import com.ganawin.mifinca.core.Resource
 import com.ganawin.mifinca.data.model.Leche
@@ -11,7 +10,7 @@ import java.util.*
 
 class LecheDataSource {
 
-    val firebaseFirestore = FirebaseFirestore.getInstance()
+    private val firebaseFirestore = FirebaseFirestore.getInstance()
     var result: String = ""
 
     suspend fun registrarLeche(litros: Int, fecha: String, collection: String): String{
@@ -53,7 +52,6 @@ class LecheDataSource {
                 listLecheFilter.add(it)
             }
         }
-        Log.d("listaLecheOrder", listLecheFilter.toString())
         return listLecheFilter
     }
 

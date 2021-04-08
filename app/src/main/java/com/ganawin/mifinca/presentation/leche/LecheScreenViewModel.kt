@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
 import com.ganawin.mifinca.core.Resource
-import com.ganawin.mifinca.data.model.Leche
 import com.ganawin.mifinca.domain.leche.LecheRepo
 import java.util.HashMap
 
@@ -47,6 +46,7 @@ class LecheScreenViewModel(private val repo: LecheRepo): ViewModel() {
     }
 }
 
+@Suppress("UNCHECKED_CAST")
 class LecheScreenViewModelFactory(private val repo: LecheRepo): ViewModelProvider.Factory{
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return LecheScreenViewModel(repo) as T

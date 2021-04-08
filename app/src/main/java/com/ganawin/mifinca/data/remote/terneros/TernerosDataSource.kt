@@ -11,7 +11,7 @@ import kotlin.collections.HashMap
 
 class TernerosDataSource {
 
-    val firebaseFirestore = FirebaseFirestore.getInstance()
+    private val firebaseFirestore = FirebaseFirestore.getInstance()
     private var result = ""
 
     suspend fun setNewTernero(mutableList: MutableList<String>, colecction: String): String{
