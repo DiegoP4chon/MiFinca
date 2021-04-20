@@ -42,7 +42,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun notifications() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener { token ->
             token.result?.let {
-                registrarDispositivo(it)
+                //registrarDispositivo(it)
             }
         }
         //FirebaseMessaging.getInstance().subscribeToTopic("ganaderosCarupa")

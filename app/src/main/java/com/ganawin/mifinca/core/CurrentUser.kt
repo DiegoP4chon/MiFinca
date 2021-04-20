@@ -1,13 +1,12 @@
 package com.ganawin.mifinca.core
 
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 
 class CurrentUser {
 
     private val firebaseAuth by lazy { FirebaseAuth.getInstance() }
     private var userUID: String = ""
-    private var userEmail: String = ""
+    private var userEmailPhone: String = ""
 
     fun userUid(): String {
         firebaseAuth.currentUser?.let {
@@ -18,10 +17,9 @@ class CurrentUser {
 
     fun userEmail(): String {
         firebaseAuth.currentUser?.let {
-            userEmail = firebaseAuth.currentUser!!.email!!
-            Log.d("verCorreo", userEmail)
+            userEmailPhone = firebaseAuth.currentUser!!.phoneNumber!!
         }
 
-        return  userEmail
+        return  userEmailPhone
     }
 }

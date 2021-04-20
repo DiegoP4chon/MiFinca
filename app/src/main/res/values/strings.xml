@@ -105,4 +105,11 @@
     <string name="error_permission_storage">Debe habilitar el permiso de almacenamiento</string>
     <string name="animal_hembra">Hembra</string>
     <string name="alert_sexo_date">Verifique la fecha y el sexo</string>
+    <string name="login_telefono">Iniciar con telefono</string>
+    <string name="hint_phone">Numero de telefono</string>
+    <string name="btn_send_message">Enviar</string>
+    <string name="hint_code">Codigo de verificación</string>
+    <string name="btn_confirm_code">Verificar</string>
+    <string name="login_email">Iniciar con correo</string>
+    <string name="error_phone_require">El numero de telefono es requerido</string>
 </resources>
